@@ -1,12 +1,14 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+ <img src="./aedes-aegypti.png" width="200" alt="Aedes aegypti Logo"/>
 </p>
 
 ## Description
-A GraphQL API consumed in two applications, one mobile and the other web, that the main purpose is to
-control the cases of Aedes aegypti mosquitoes in the city of Bagé in Rio Grande do Sul, Brazil.
+
+- A GraphQL API consumed in two applications, one mobile and the other web. In which the main purpose is to control the cases of Aedes aegypti mosquitoes in the city of Bagé in Rio Grande do Sul, Brazil.
+- About Aedes Aegypti: https://www.ecdc.europa.eu/en/disease-vectors/facts/mosquito-factsheets/aedes-aegypti
 
 ### This API has some features, for example:
+
 - Authentication (under development)
   - Sign up
   - Sign in
@@ -16,6 +18,7 @@ control the cases of Aedes aegypti mosquitoes in the city of Bagé in Rio Grande
 - Storing data on PostgreSQL database.
 
 ### Architecture and folder structure
+
 - Following clean architecture principles, developing the layers separately from each other.
 - Core: The "domain" layer.
 - Application: The "application" layer.
