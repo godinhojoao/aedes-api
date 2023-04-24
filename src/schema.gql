@@ -1,0 +1,44 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Account {
+  id: String!
+  name: String!
+  email: String!
+  documentNumber: String!
+  role: RoleEnum!
+}
+
+enum RoleEnum {
+  ADMIN
+  USER
+}
+
+type Query {
+  findAllAccounts: [Account!]!
+  findAccount(id: String!): Account!
+}
+
+type Mutation {
+  createAccount(createAccountInput: CreateAccountInput!): Account!
+  update(updateAccountInput: UpdateAccountInput!): Account!
+  removeAccount(id: String!): Account!
+}
+
+input CreateAccountInput {
+  name: String!
+  email: String!
+  password: String!
+  documentNumber: String!
+  role: RoleEnum!
+}
+
+input UpdateAccountInput {
+  id: String!
+  name: String!
+  email: String!
+  password: String!
+  documentNumber: String!
+  role: RoleEnum!
+}
