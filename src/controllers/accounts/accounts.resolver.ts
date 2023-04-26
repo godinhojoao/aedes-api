@@ -3,7 +3,7 @@ import {
   Account,
   CreateAccountInput,
   UpdateAccountInput,
-} from '../../application/accounts/accounts.dtos';
+} from './accounts.graphql';
 import { AccountsUseCases } from '../../application/accounts/accounts.use-cases';
 
 @Resolver(() => Account)

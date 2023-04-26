@@ -4,7 +4,7 @@ import {
   ObjectType,
   registerEnumType,
 } from '@nestjs/graphql';
-import { RoleEnum } from './../../core/entities/accounts.entity';
+import { RoleEnum } from './../../core/entities/accounts/accounts.entity';
 
 registerEnumType(RoleEnum, {
   name: 'RoleEnum',
@@ -22,7 +22,7 @@ export class Account {
   email: string;
 
   @Field()
-  documentNumber: string;
+  cpf: string;
 
   @Field(() => RoleEnum)
   role: RoleEnum;
@@ -40,12 +40,11 @@ export class CreateAccountInput {
   password: string;
 
   @Field()
-  documentNumber: string;
+  cpf: string;
 
   @Field(() => RoleEnum)
   role?: RoleEnum;
 }
-
 @InputType()
 export class UpdateAccountInput {
   @Field()
@@ -61,7 +60,7 @@ export class UpdateAccountInput {
   password?: string;
 
   @Field()
-  documentNumber?: string;
+  cpf?: string;
 
   @Field(() => RoleEnum)
   role?: RoleEnum;

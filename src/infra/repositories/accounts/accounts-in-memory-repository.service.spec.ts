@@ -24,15 +24,15 @@ describe('AccountsInMemoryRepository', () => {
       const createdAccount = service.create({
         name: 'John Doe',
         email: 'john@example.com',
-        password: 'password123',
-        documentNumber: '123.456.789-00',
+        password: 'Demo@123',
+        cpf: '12345678900',
       });
       expect(createdAccount).toEqual({
         id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00544',
         name: 'John Doe',
         email: 'john@example.com',
-        password: 'password123',
-        documentNumber: '123.456.789-00',
+        password: 'Demo@123',
+        cpf: '12345678900',
         role: 1,
       });
     });
@@ -46,32 +46,32 @@ describe('AccountsInMemoryRepository', () => {
           id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00541',
           name: 'John Doe',
           email: 'john@example.com',
-          password: 'password123',
-          documentNumber: '123.456.789-00',
+          password: 'Demo@123',
+          cpf: '12345678900',
           role: 0,
         },
         {
           id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00542',
           name: 'Jane Smith',
           email: 'jane@example.com',
-          password: 'password456',
-          documentNumber: '987.654.321-00',
+          password: 'Demo@123',
+          cpf: '98765432100',
           role: 1,
         },
         {
           id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00543',
           name: 'Bob Johnson',
           email: 'bob@example.com',
-          password: 'password789',
-          documentNumber: '456.789.123-00',
+          password: 'Demo@123',
+          cpf: '45678912300',
           role: 1,
         },
         {
           id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00544',
           name: 'John Doe',
           email: 'john@example.com',
-          password: 'password123',
-          documentNumber: '123.456.789-00',
+          password: 'Demo@123',
+          cpf: '12345678900',
           role: 1,
         },
       ]);
@@ -85,8 +85,8 @@ describe('AccountsInMemoryRepository', () => {
         id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00543',
         name: 'Bob Johnson',
         email: 'bob@example.com',
-        password: 'password789',
-        documentNumber: '456.789.123-00',
+        password: 'Demo@123',
+        cpf: '45678912300',
         role: 1,
       });
     });
@@ -108,8 +108,8 @@ describe('AccountsInMemoryRepository', () => {
         id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00543',
         name: 'joao',
         email: 'bob@example.com',
-        password: 'password789',
-        documentNumber: '456.789.123-00',
+        password: 'Demo@123',
+        cpf: '45678912300',
         role: 1,
       });
     });
@@ -131,8 +131,8 @@ describe('AccountsInMemoryRepository', () => {
         id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00544',
         name: 'John Doe',
         email: 'john@example.com',
-        password: 'password123',
-        documentNumber: '123.456.789-00',
+        password: 'Demo@123',
+        cpf: '12345678900',
         role: 1,
       });
     });

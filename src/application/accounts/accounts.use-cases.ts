@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { AccountsRepository } from './../../core/repositories/accounts.repository';
-import { AccountEntity } from './../../core/entities/accounts.entity';
-import { CreateAccountInput, UpdateAccountInput } from './accounts.dtos';
+import { AccountEntity } from './../../core/entities/accounts/accounts.entity';
+import {
+  CreateAccountInputDto,
+  UpdateAccountInputDto,
+} from './../../core/entities/accounts/accounts.dtos';
 
 @Injectable()
 export class AccountsUseCases {
@@ -11,7 +14,7 @@ export class AccountsUseCases {
     return this.accountsRepository.findAll();
   }
 
-  create(createAccountInput: CreateAccountInput): AccountEntity {
+  create(createAccountInput: CreateAccountInputDto): AccountEntity {
     return this.accountsRepository.create(createAccountInput);
   }
 
@@ -19,7 +22,7 @@ export class AccountsUseCases {
     return this.accountsRepository.findOne(id);
   }
 
-  update(updateAccountInput: UpdateAccountInput): AccountEntity {
+  update(updateAccountInput: UpdateAccountInputDto): AccountEntity {
     return this.accountsRepository.update(updateAccountInput);
   }
 

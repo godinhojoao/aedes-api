@@ -2,49 +2,46 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import {
   AccountEntity,
   RoleEnum,
-} from './../../../core/entities/accounts.entity';
+} from './../../../core/entities/accounts/accounts.entity';
 import { AccountsRepository } from './../../../core/repositories/accounts.repository';
 import {
-  CreateAccountInput,
-  UpdateAccountInput,
-} from './../../../application/accounts/accounts.dtos';
+  CreateAccountInputDto,
+  UpdateAccountInputDto,
+} from 'src/core/entities/accounts/accounts.dtos';
 
 let accounts: AccountEntity[] = [
   {
     id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00541',
     name: 'John Doe',
     email: 'john@example.com',
-    password: 'password123',
-    documentNumber: '123.456.789-00',
+    password: 'Demo@123',
+    cpf: '12345678900',
     role: RoleEnum.ADMIN,
   },
   {
     id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00542',
     name: 'Jane Smith',
     email: 'jane@example.com',
-    password: 'password456',
-    documentNumber: '987.654.321-00',
+    password: 'Demo@123',
+    cpf: '98765432100',
     role: RoleEnum.USER,
   },
   {
     id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00543',
     name: 'Bob Johnson',
     email: 'bob@example.com',
-    password: 'password789',
-    documentNumber: '456.789.123-00',
+    password: 'Demo@123',
+    cpf: '45678912300',
     role: RoleEnum.USER,
   },
 ];
 
 @Injectable()
 export class AccountsInMemoryRepository implements AccountsRepository {
-  create(createAccountInput: CreateAccountInput): AccountEntity {
-    accounts.push({
-      id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00544',
-      ...createAccountInput,
-      role: RoleEnum.USER,
-    });
-    return accounts[accounts.length - 1];
+  create(createAccountInput: CreateAccountInputDto): AccountEntity {
+    const newAccount = AccountEntity.createAccount(createAccountInput);
+    accounts.push(newAccount);
+    return newAccount;
   }
 
   findAll(): AccountEntity[] {
@@ -59,7 +56,7 @@ export class AccountsInMemoryRepository implements AccountsRepository {
     return account;
   }
 
-  update(updateAccountInput: UpdateAccountInput): AccountEntity {
+  update(updateAccountInput: UpdateAccountInputDto): AccountEntity {
     const accountIndex = accounts.findIndex(
       (account) => account.id === updateAccountInput.id,
     );
@@ -69,7 +66,11 @@ export class AccountsInMemoryRepository implements AccountsRepository {
       );
     }
     const currentAccount = accounts[accountIndex];
-    accounts[accountIndex] = { ...currentAccount, ...updateAccountInput };
+    const updatedAccount = AccountEntity.buildExistentAccount({
+      ...currentAccount,
+      ...updateAccountInput,
+    });
+    accounts[accountIndex] = updatedAccount;
     return accounts[accountIndex];
   }
 

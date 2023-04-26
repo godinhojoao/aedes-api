@@ -6,7 +6,7 @@ type Account {
   id: String!
   name: String!
   email: String!
-  documentNumber: String!
+  cpf: String!
   role: RoleEnum!
 }
 
@@ -30,7 +30,7 @@ input CreateAccountInput {
   name: String!
   email: String!
   password: String!
-  documentNumber: String!
+  cpf: String!
   role: RoleEnum!
 }
 
@@ -39,6 +39,6 @@ input UpdateAccountInput {
   name: String!
   email: String!
   password: String!
-  documentNumber: String!
+  cpf: String!
   role: RoleEnum!
 }
