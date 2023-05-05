@@ -1,39 +1,39 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import {
-  Account,
-  CreateAccountInput,
-  UpdateAccountInput,
-} from './accounts.graphql';
 import { AccountsUseCases } from '../../application/accounts/accounts.use-cases';
+import {
+  AccountToViewDto,
+  CreateAccountInputDto,
+  UpdateAccountInputDto,
+  FindAccountInputDto,
+  RemoveAccountInputDto,
+} from '../../core/entities/accounts/accounts.dtos';
 
-@Resolver(() => Account)
+@Resolver(() => AccountToViewDto)
 export class AccountsResolver {
   constructor(private readonly accountsUseCases: AccountsUseCases) {}
 
-  @Mutation(() => Account)
-  createAccount(
-    @Args('createAccountInput') createAccountInput: CreateAccountInput,
-  ) {
-    return this.accountsUseCases.create(createAccountInput);
-  }
-
-  @Query(() => [Account])
-  findAllAccounts() {
+  @Query(() => [AccountToViewDto])
+  findAllAccounts(): AccountToViewDto[] {
     return this.accountsUseCases.findAll();
   }
 
-  @Query(() => Account)
-  findAccount(@Args('id') id: string) {
-    return this.accountsUseCases.findOne(id);
+  @Query(() => AccountToViewDto)
+  findAccount(@Args('input') input: FindAccountInputDto): AccountToViewDto {
+    return this.accountsUseCases.findOne({ id: input.id });
   }
 
-  @Mutation(() => Account)
-  update(@Args('updateAccountInput') updateAccountInput: UpdateAccountInput) {
-    return this.accountsUseCases.update(updateAccountInput);
+  @Mutation(() => AccountToViewDto)
+  createAccount(@Args('input') input: CreateAccountInputDto): AccountToViewDto {
+    return this.accountsUseCases.create(input);
   }
 
-  @Mutation(() => Account)
-  removeAccount(@Args('id') id: string) {
-    return this.accountsUseCases.remove(id);
+  @Mutation(() => AccountToViewDto)
+  updateAccount(@Args('input') input: UpdateAccountInputDto): AccountToViewDto {
+    return this.accountsUseCases.update(input);
+  }
+
+  @Mutation(() => AccountToViewDto)
+  removeAccount(@Args('input') input: RemoveAccountInputDto): AccountToViewDto {
+    return this.accountsUseCases.remove(input.id);
   }
 }

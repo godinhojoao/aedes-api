@@ -3,11 +3,10 @@ import {
   AccountEntity,
   RoleEnum,
 } from './../../../core/entities/accounts/accounts.entity';
-import { AccountsRepository } from './../../../core/repositories/accounts.repository';
 import {
-  CreateAccountInputDto,
-  UpdateAccountInputDto,
-} from 'src/core/entities/accounts/accounts.dtos';
+  AccountsRepository,
+  FindOneInput,
+} from './../../../core/repositories/accounts.repository';
 
 let accounts: AccountEntity[] = [
   {
@@ -38,32 +37,39 @@ let accounts: AccountEntity[] = [
 
 @Injectable()
 export class AccountsInMemoryRepository implements AccountsRepository {
-  create(createAccountInput: CreateAccountInputDto): AccountEntity {
-    const newAccount = AccountEntity.createAccount(createAccountInput);
-    accounts.push(newAccount);
-    return newAccount;
+  create(accountEntity: AccountEntity): AccountEntity {
+    const existentAccount = accounts.find(
+      (account) =>
+        account.cpf === accountEntity.cpf ||
+        account.email === accountEntity.email,
+    );
+    if (existentAccount) {
+      throw new BadRequestException('Account already exists');
+    }
+    accounts.push(accountEntity);
+    return accountEntity;
   }
 
   findAll(): AccountEntity[] {
     return accounts;
   }
 
-  findOne(id: string): AccountEntity {
-    const account = accounts.find((account) => account.id === id);
+  findOne(input: FindOneInput): AccountEntity {
+    const account = accounts.find(
+      (account) => account.id === input.id || account.cpf === input.cpf,
+    );
     if (!account) {
-      throw new BadRequestException(`No account with id ${id} found`);
+      throw new BadRequestException('No account found');
     }
     return account;
   }
 
-  update(updateAccountInput: UpdateAccountInputDto): AccountEntity {
+  update(updateAccountInput: AccountEntity): AccountEntity {
     const accountIndex = accounts.findIndex(
       (account) => account.id === updateAccountInput.id,
     );
     if (accountIndex < 0) {
-      throw new BadRequestException(
-        `No account with id ${updateAccountInput.id} found`,
-      );
+      throw new BadRequestException('No account found');
     }
     const currentAccount = accounts[accountIndex];
     const updatedAccount = AccountEntity.buildExistentAccount({
@@ -85,7 +91,7 @@ export class AccountsInMemoryRepository implements AccountsRepository {
     });
 
     if (!accountToRemove) {
-      throw new BadRequestException(`No account with id ${id} found`);
+      throw new BadRequestException('No account found');
     }
     return accountToRemove;
   }

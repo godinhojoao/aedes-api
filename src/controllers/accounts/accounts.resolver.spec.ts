@@ -17,4 +17,14 @@ describe('AccountsResolver', () => {
   it('should be defined', () => {
     expect(resolver).toBeDefined();
   });
+
+  // describe('findOne', () => {
+  //   it('Given invalid id should return error', () => {
+  //     try {
+  //       resolver.findAccount({ id: undefined });
+  //     } catch (error) {
+  //       expect(error).toEqual({});
+  //     }
+  //   });
+  // });
 });

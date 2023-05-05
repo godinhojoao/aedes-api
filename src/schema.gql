@@ -2,7 +2,7 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Account {
+type AccountToViewDto {
   id: String!
   name: String!
   email: String!
@@ -16,29 +16,38 @@ enum RoleEnum {
 }
 
 type Query {
-  findAllAccounts: [Account!]!
-  findAccount(id: String!): Account!
+  findAllAccounts: [AccountToViewDto!]!
+  findAccount(input: FindAccountInputDto!): AccountToViewDto!
+}
+
+input FindAccountInputDto {
+  id: String
+  cpf: String
 }
 
 type Mutation {
-  createAccount(createAccountInput: CreateAccountInput!): Account!
-  update(updateAccountInput: UpdateAccountInput!): Account!
-  removeAccount(id: String!): Account!
+  createAccount(input: CreateAccountInputDto!): AccountToViewDto!
+  updateAccount(input: UpdateAccountInputDto!): AccountToViewDto!
+  removeAccount(input: RemoveAccountInputDto!): AccountToViewDto!
 }
 
-input CreateAccountInput {
+input CreateAccountInputDto {
   name: String!
   email: String!
   password: String!
   cpf: String!
-  role: RoleEnum!
+  role: RoleEnum
 }
 
-input UpdateAccountInput {
+input UpdateAccountInputDto {
   id: String!
   name: String!
   email: String!
   password: String!
   cpf: String!
   role: RoleEnum!
+}
+
+input RemoveAccountInputDto {
+  id: String
 }

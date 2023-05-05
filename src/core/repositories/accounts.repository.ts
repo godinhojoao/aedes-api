@@ -1,13 +1,14 @@
-import {
-  CreateAccountInputDto,
-  UpdateAccountInputDto,
-} from '../entities/accounts/accounts.dtos';
 import { AccountEntity } from '../entities/accounts/accounts.entity';
+
+export type FindOneInput = {
+  id?: string;
+  cpf?: string;
+};
 
 export abstract class AccountsRepository {
   abstract findAll(): AccountEntity[];
-  abstract create(createAccountInput: CreateAccountInputDto): AccountEntity;
-  abstract findOne(id: string): AccountEntity;
-  abstract update(updateAccountInput: UpdateAccountInputDto): AccountEntity;
+  abstract create(createAccountInput: AccountEntity): AccountEntity;
+  abstract findOne(input: FindOneInput): AccountEntity;
+  abstract update(updateAccountInput: AccountEntity): AccountEntity;
   abstract remove(id: string): AccountEntity;
 }

@@ -17,8 +17,9 @@
   - Reports
 - Storing data on PostgreSQL database.
 
-### Architecture and folder structure
+### I know that folder structure is not important for architectural reasons. But in this case will be easier to understand the architecture.
 
+### Architecture and folder structure
 - Following clean architecture principles, developing the layers separately from each other.
 - Core: The "domain" layer.
 - Application: The "application" layer.

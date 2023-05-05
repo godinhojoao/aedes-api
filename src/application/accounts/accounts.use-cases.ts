@@ -1,32 +1,45 @@
 import { Injectable } from '@nestjs/common';
 import { AccountsRepository } from './../../core/repositories/accounts.repository';
-import { AccountEntity } from './../../core/entities/accounts/accounts.entity';
 import {
   CreateAccountInputDto,
   UpdateAccountInputDto,
+  AccountToViewDto,
+  FindAccountInputDto,
 } from './../../core/entities/accounts/accounts.dtos';
+import { AccountEntity } from './../../core/entities/accounts/accounts.entity';
+import { AccountMapper } from './accounts.mappers';
 
 @Injectable()
 export class AccountsUseCases {
   constructor(private accountsRepository: AccountsRepository) {}
 
-  findAll(): AccountEntity[] {
-    return this.accountsRepository.findAll();
+  findAll(): AccountToViewDto[] {
+    const accounts = this.accountsRepository.findAll();
+    return AccountMapper.manyToView(accounts);
   }
 
-  create(createAccountInput: CreateAccountInputDto): AccountEntity {
-    return this.accountsRepository.create(createAccountInput);
+  create(input: CreateAccountInputDto): AccountToViewDto {
+    const accountEntity = AccountEntity.createAccount(input);
+    const createdAccount = this.accountsRepository.create(accountEntity);
+    return AccountMapper.toView(createdAccount);
   }
 
-  findOne(id: string): AccountEntity {
-    return this.accountsRepository.findOne(id);
+  findOne(input: FindAccountInputDto): AccountToViewDto {
+    const account = this.accountsRepository.findOne({
+      id: input.id,
+      cpf: input.cpf,
+    });
+    return AccountMapper.toView(account);
   }
 
-  update(updateAccountInput: UpdateAccountInputDto): AccountEntity {
-    return this.accountsRepository.update(updateAccountInput);
+  update(input: UpdateAccountInputDto): AccountToViewDto {
+    const accountEntity = AccountEntity.buildExistentAccount(input);
+    const updatedAccount = this.accountsRepository.update(accountEntity);
+    return AccountMapper.toView(updatedAccount);
   }
 
-  remove(id: string): AccountEntity {
-    return this.accountsRepository.remove(id);
+  remove(id: string): AccountToViewDto {
+    const deletedAccount = this.accountsRepository.remove(id);
+    return AccountMapper.toView(deletedAccount);
   }
 }
