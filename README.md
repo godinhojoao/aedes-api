@@ -21,7 +21,7 @@
 
 ### Architecture and folder structure
 - Following clean architecture principles, developing the layers separately from each other.
-- Core: The "domain" layer.
+- Domain: The "domain" layer.
 - Application: The "application" layer.
 - Infra: The "infrastructure" layer.
 - Controllers: The "presentation" layer.

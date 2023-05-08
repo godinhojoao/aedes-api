@@ -6,7 +6,11 @@ import {
   UpdateAccountInputDto,
   FindAccountInputDto,
   RemoveAccountInputDto,
-} from '../../core/entities/accounts/accounts.dtos';
+  SignInInputDto,
+  SignInResultDto,
+} from '../../domain/entities/accounts/accounts.dtos';
+import { SkipAuthentication } from '../../core/decorators/SkipAuthentication';
+import { BadRequestException } from '@nestjs/common';
 
 @Resolver(() => AccountToViewDto)
 export class AccountsResolver {
@@ -19,7 +23,11 @@ export class AccountsResolver {
 
   @Query(() => AccountToViewDto)
   findAccount(@Args('input') input: FindAccountInputDto): AccountToViewDto {
-    return this.accountsUseCases.findOne({ id: input.id });
+    const account = this.accountsUseCases.findOne(input);
+    if (!account) {
+      throw new BadRequestException('No account found');
+    }
+    return account;
   }
 
   @Mutation(() => AccountToViewDto)
@@ -35,5 +43,12 @@ export class AccountsResolver {
   @Mutation(() => AccountToViewDto)
   removeAccount(@Args('input') input: RemoveAccountInputDto): AccountToViewDto {
     return this.accountsUseCases.remove(input.id);
+  }
+
+  @SkipAuthentication()
+  @Mutation(() => SignInResultDto)
+  async signIn(@Args('input') input: SignInInputDto): Promise<SignInResultDto> {
+    const token = await this.accountsUseCases.signIn(input);
+    return { token };
   }
 }

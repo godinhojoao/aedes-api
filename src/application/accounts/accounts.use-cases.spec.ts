@@ -1,8 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AccountsUseCases } from './accounts.use-cases';
-import { AccountsRepository } from '../../core/repositories/accounts.repository';
+import { AccountsRepository } from '../../domain/repositories/accounts.repository';
 import { AccountsInMemoryRepository } from '../../infra/repositories/accounts/accounts-in-memory-repository.service';
 import { BadRequestException } from '@nestjs/common';
+import { HashAdapter } from './../../domain/adapters/HashAdapter';
+import { CryptoHashAdapter } from './../../infra/adapters/crypto/CryptoHashAdapter';
+import { JwtAdapter } from './../../domain/adapters/JwtAdapter';
+import { JwtAdapterImp } from './../../infra/adapters/jwt/JwtAdapter';
 
 describe('AccountsUseCases', () => {
   let service: AccountsUseCases;
@@ -15,6 +19,14 @@ describe('AccountsUseCases', () => {
         {
           provide: AccountsRepository,
           useClass: AccountsInMemoryRepository,
+        },
+        {
+          provide: HashAdapter,
+          useClass: CryptoHashAdapter,
+        },
+        {
+          provide: JwtAdapter,
+          useClass: JwtAdapterImp,
         },
       ],
     }).compile();
@@ -40,32 +52,6 @@ describe('AccountsUseCases', () => {
         role: 1,
       });
     });
-
-    // it('Given invalid payload should return validation error', () => {
-    //   // try {
-    //   const noCreateCall = () =>
-    //     service.create({
-    //       name: 'doe',
-    //       email: 'doe@gmail.com',
-    //       password: 'Demo@123',
-    //       cpf: '77320844000144',
-    //     });
-    //   expect(noCreateCall).toThrowError(ValidationError);
-    //   expect(noCreateCall).toThrowError('dale');
-    //   // } catch (error) {
-    //   //   expect(error).toBeInstanceOf(ValidationError);
-    //   //   expect(error).toEqual({
-    //   //     invalidProperties: ['cpf'],
-    //   //     message: 'Invalid input for cpf with value 77320844000144',
-    //   //     name: 'VALIDATION_EXCEPTION',
-    //   //     validExample: '90665363060',
-    //   //     constraints: {
-    //   //       matches: 'cpf must match /^\\d{11}$/ regular expression',
-    //   //     },
-    //   //     value: '77320844000144',
-    //   //   });
-    //   // }
-    // });
 
     it('Given existent cpf should return error', () => {
       const noCreateCall = () =>
@@ -112,18 +98,19 @@ describe('AccountsUseCases', () => {
       });
     });
 
-    // it('Given invalid payload should return error', () => {
-    //   const noUpdateCall = service.update({
-    //     id: createdAccountId,
-    //     name: 'Testing name',
-    //     email: 'updated@example.com',
-    //     password: 'Demo@123',
-    //     cpf: '77320844000144',
-    //     role: 1,
-    //   });
-    //   expect(noUpdateCall).toThrowError(BadRequestException);
-    //   expect(noUpdateCall).toThrowError('Account already exists');
-    // });
+    it('Given inexistent account should return error', () => {
+      const noUpdateCall = () =>
+        service.update({
+          id: 'adsdsa',
+          name: 'Testing name',
+          email: 'updated@example.com',
+          password: 'Demo@123',
+          cpf: '77320844000144',
+          role: 1,
+        });
+      expect(noUpdateCall).toThrowError(BadRequestException);
+      expect(noUpdateCall).toThrowError('No account found');
+    });
   });
 
   describe('findOne', () => {
@@ -176,6 +163,36 @@ describe('AccountsUseCases', () => {
       const noCpfCall = () => service.findOne({ cpf: 'invalid test' });
       expect(noCpfCall).toThrowError(BadRequestException);
       expect(noCpfCall).toThrowError('No account found');
+    });
+  });
+
+  describe('signIn', () => {
+    it('Given correct email and password should return token', () => {
+      const token = service.signIn({
+        email: 'john@example.com',
+        password: 'Demo@123',
+      });
+      expect(token).toEqual(expect.any(String));
+    });
+
+    it('Given incorrect email should return error', () => {
+      const noTokenCall = () =>
+        service.signIn({
+          email: 'error@example.com',
+          password: 'Demo@123',
+        });
+      expect(noTokenCall).toThrowError(BadRequestException);
+      expect(noTokenCall).toThrowError('Invalid email or password');
+    });
+
+    it('Given incorrect password should return error', () => {
+      const noTokenCall = () =>
+        service.signIn({
+          email: 'john@example.com',
+          password: 'testabc',
+        });
+      expect(noTokenCall).toThrowError(BadRequestException);
+      expect(noTokenCall).toThrowError('Invalid email or password');
     });
   });
 });

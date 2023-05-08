@@ -8,6 +8,7 @@ import {
   IsUUID,
   Matches,
   ValidateIf,
+  isEmail,
 } from 'class-validator';
 import {
   Field,
@@ -113,25 +114,44 @@ export abstract class UpdateAccountInputDto {
 @InputType()
 export abstract class FindAccountInputDto {
   @Field({ nullable: true })
-  @ValidateIf((input) => !input.cpf)
+  @ValidateIf((input) => !input.cpf && !input.email)
   @IsNotEmpty()
   @IsUUID('4')
   public id?: string;
 
-  @ValidateIf((input) => !input.id)
+  @Field({ nullable: true })
+  @ValidateIf((input) => !input.id && !input.email)
   @IsNotEmpty()
   @IsString()
   @Matches(CPF_REGEX)
-  @Field({ nullable: true })
   public cpf?: string;
+
+  @Field({ nullable: true })
+  @ValidateIf((input) => !input.id && !input.cpf)
+  @IsNotEmpty()
+  @IsEmail()
+  public email?: string;
 }
 
 @InputType()
 export abstract class RemoveAccountInputDto {
-  @Field({ nullable: true })
+  @Field()
   @IsNotEmpty()
   @IsUUID('4')
   public id: string;
+}
+
+@InputType()
+export abstract class SignInInputDto {
+  @Field()
+  @IsNotEmpty()
+  @IsEmail()
+  public email: string;
+
+  @Field()
+  @IsString()
+  @IsNotEmpty()
+  password: string;
 }
 
 @ObjectType()
@@ -150,4 +170,10 @@ export abstract class AccountToViewDto {
 
   @Field(() => RoleEnum)
   role: RoleEnum;
+}
+
+@ObjectType()
+export abstract class SignInResultDto {
+  @Field()
+  token: string;
 }

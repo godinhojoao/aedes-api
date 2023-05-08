@@ -1,11 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { BadRequestException, INestApplication } from '@nestjs/common';
+import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { AccountsResolver } from './../src/controllers/accounts/accounts.resolver';
 import { AccountsUseCases } from './../src/application/accounts/accounts.use-cases';
-import { AccountsRepository } from './../src/core/repositories/accounts.repository';
+import { AccountsRepository } from '../src/domain/repositories/accounts.repository';
 import { AccountsInMemoryRepository } from './../src/infra/repositories/accounts/accounts-in-memory-repository.service';
+import { HashAdapter } from './../src/domain/adapters/HashAdapter';
+import { CryptoHashAdapter } from './../src/infra/adapters/crypto/CryptoHashAdapter';
+import { JwtAdapter } from './../src/domain/adapters/JwtAdapter';
+import { JwtAdapterImp } from './../src/infra/adapters/jwt/JwtAdapter';
 
 describe('Accounts Resolvers (e2e)', () => {
   let app: INestApplication;
@@ -21,6 +25,14 @@ describe('Accounts Resolvers (e2e)', () => {
           provide: AccountsRepository,
           useClass: AccountsInMemoryRepository,
         },
+        {
+          provide: HashAdapter,
+          useClass: CryptoHashAdapter,
+        },
+        {
+          provide: JwtAdapter,
+          useClass: JwtAdapterImp,
+        },
       ],
     }).compile();
 
@@ -29,9 +41,10 @@ describe('Accounts Resolvers (e2e)', () => {
   });
 
   describe('findAccount', () => {
-    it('Given valid input should return account', async () => {
+    it('Given valid id should return account', async () => {
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
+        // .set('Authorization', `Bearer token_aqui`)
         .send({
           query: `query findAccount ($input: FindAccountInputDto!) {
               findAccount (input: $input) {
@@ -52,6 +65,83 @@ describe('Accounts Resolvers (e2e)', () => {
         cpf: '12345678900',
         role: 'ADMIN',
       });
+    });
+
+    it('Given valid cpf should return account', async () => {
+      const response = await request(app.getHttpServer())
+        .post(`/graphql`)
+        .send({
+          query: `query findAccount ($input: FindAccountInputDto!) {
+              findAccount (input: $input) {
+                id
+                name
+                email
+                cpf
+                role
+              }
+            }`,
+          variables: { input: { cpf: '12345678900' } },
+        });
+      expect(response.statusCode).toBe(200);
+      expect(response.body.data.findAccount).toEqual({
+        id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00541',
+        name: 'John Doe',
+        email: 'john@example.com',
+        cpf: '12345678900',
+        role: 'ADMIN',
+      });
+    });
+
+    it('Given valid email should return account', async () => {
+      const response = await request(app.getHttpServer())
+        .post(`/graphql`)
+        .send({
+          query: `query findAccount ($input: FindAccountInputDto!) {
+              findAccount (input: $input) {
+                id
+                name
+                email
+                cpf
+                role
+              }
+            }`,
+          variables: { input: { email: 'john@example.com' } },
+        });
+      expect(response.statusCode).toBe(200);
+      expect(response.body.data.findAccount).toEqual({
+        id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00541',
+        name: 'John Doe',
+        email: 'john@example.com',
+        cpf: '12345678900',
+        role: 'ADMIN',
+      });
+    });
+
+    it('Given nonexistent email should return error', async () => {
+      const response = await request(app.getHttpServer())
+        .post(`/graphql`)
+        .send({
+          query: `query findAccount ($input: FindAccountInputDto!) {
+              findAccount (input: $input) {
+                id
+                name
+                email
+                cpf
+                role
+              }
+            }`,
+          variables: { input: { email: 'testingnonexistent@example.com' } },
+        });
+      expect(response.statusCode).toBe(200);
+      expect(response.body.data).toBe(null);
+      expect(response.body.errors).toEqual([
+        {
+          code: 'BAD_REQUEST',
+          detailedMessage: 'No account found',
+          message: 'No account found',
+          path: ['findAccount'],
+        },
+      ]);
     });
 
     it('Given invalid id should return validation error', async () => {
@@ -454,10 +544,87 @@ describe('Accounts Resolvers (e2e)', () => {
         role: 'USER',
       });
 
-      const noIdCall = () =>
-        new AccountsInMemoryRepository().findOne({ id: createdAccountId });
-      expect(noIdCall).toThrowError(BadRequestException);
-      expect(noIdCall).toThrowError('No account found');
+      const account = new AccountsInMemoryRepository().findOne({
+        id: createdAccountId,
+      });
+      expect(account).toBe(null);
+    });
+  });
+
+  describe('signIn', () => {
+    it('Given valid email and password should return jwt token', async () => {
+      const signInInput = {
+        email: 'john@example.com',
+        password: 'Demo@123',
+      };
+      const response = await request(app.getHttpServer())
+        .post(`/graphql`)
+        .send({
+          query: `mutation signIn ($input: SignInInputDto!) {
+            signIn (input: $input) {
+              token
+            }
+          }`,
+          variables: { input: signInInput },
+        });
+      expect(response.statusCode).toBe(200);
+      expect(response.body.data.signIn).toEqual({
+        token: expect.any(String),
+      });
+    });
+
+    it('Given invalid email should return error', async () => {
+      const signInInput = {
+        email: 'testerror@example.com',
+        password: 'Demo@123',
+      };
+      const response = await request(app.getHttpServer())
+        .post(`/graphql`)
+        .send({
+          query: `mutation signIn ($input: SignInInputDto!) {
+            signIn (input: $input) {
+              token
+            }
+          }`,
+          variables: { input: signInInput },
+        });
+      expect(response.statusCode).toBe(200);
+      expect(response.body.data).toBe(null);
+      expect(response.body.errors).toEqual([
+        {
+          code: 'BAD_REQUEST',
+          detailedMessage: 'Invalid email or password.',
+          message: 'Invalid email or password.',
+          path: ['signIn'],
+        },
+      ]);
+    });
+
+    it('Given invalid password should return error', async () => {
+      const signInInput = {
+        email: 'john@example.com',
+        password: 'invalid12',
+      };
+      const response = await request(app.getHttpServer())
+        .post(`/graphql`)
+        .send({
+          query: `mutation signIn ($input: SignInInputDto!) {
+            signIn (input: $input) {
+              token
+            }
+          }`,
+          variables: { input: signInInput },
+        });
+      expect(response.statusCode).toBe(200);
+      expect(response.body.data).toBe(null);
+      expect(response.body.errors).toEqual([
+        {
+          code: 'BAD_REQUEST',
+          detailedMessage: 'Invalid email or password.',
+          message: 'Invalid email or password.',
+          path: ['signIn'],
+        },
+      ]);
     });
   });
 });

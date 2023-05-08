@@ -1,9 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AccountsInMemoryRepository } from './accounts-in-memory-repository.service';
 import { BadRequestException } from '@nestjs/common';
-import { AccountEntity } from './../../../core/entities/accounts/accounts.entity';
+import { AccountEntity } from '../../../domain/entities/accounts/accounts.entity';
+import { CryptoHashAdapter } from './../../../infra/adapters/crypto/CryptoHashAdapter';
 
 describe('AccountsInMemoryRepository', () => {
+  const cryptoHashAdapter = new CryptoHashAdapter();
   let service: AccountsInMemoryRepository;
 
   beforeEach(async () => {
@@ -18,12 +20,15 @@ describe('AccountsInMemoryRepository', () => {
 
   describe('create', () => {
     it('Given valid payload should create account', () => {
-      const accountEntity = AccountEntity.createAccount({
-        name: 'John Doe',
-        email: 'john2@example.com',
-        password: 'Demo@123',
-        cpf: '55729425023',
-      });
+      const accountEntity = AccountEntity.createAccount(
+        {
+          name: 'John Doe',
+          email: 'john2@example.com',
+          password: 'Demo@123',
+          cpf: '55729425023',
+        },
+        cryptoHashAdapter,
+      );
       const createdAccount = service.create(accountEntity);
       expect(createdAccount).toEqual({
         id: expect.any(String),
@@ -34,14 +39,16 @@ describe('AccountsInMemoryRepository', () => {
         role: 1,
       });
     });
-
     it('Given already existent cpf should return error', () => {
-      const accountEntity = AccountEntity.createAccount({
-        name: 'John Doe',
-        email: 'john3@example.com',
-        password: 'Demo@123',
-        cpf: '55729425023',
-      });
+      const accountEntity = AccountEntity.createAccount(
+        {
+          name: 'John Doe',
+          email: 'john3@example.com',
+          password: 'Demo@123',
+          cpf: '55729425023',
+        },
+        cryptoHashAdapter,
+      );
       const alreadyExistentAccountCall = () => service.create(accountEntity);
       expect(alreadyExistentAccountCall).toThrowError(BadRequestException);
       expect(alreadyExistentAccountCall).toThrowError('Account already exists');
@@ -103,10 +110,9 @@ describe('AccountsInMemoryRepository', () => {
       });
     });
 
-    it('Given inexistent id should return error', () => {
-      const noIdCall = () => service.findOne({ id: 'invalid test' });
-      expect(noIdCall).toThrowError(BadRequestException);
-      expect(noIdCall).toThrowError('No account found');
+    it('Given inexistent id should return null', () => {
+      const account = service.findOne({ id: 'invalid test' });
+      expect(account).toBe(null);
     });
 
     it('Given existent cpf should return account', () => {
@@ -117,7 +123,8 @@ describe('AccountsInMemoryRepository', () => {
         id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00542',
         name: 'Jane Smith',
         email: 'jane@example.com',
-        password: 'Demo@123',
+        password:
+          'c1568246ce2acb6e9bb1016e405f103a6725bbd3261ee6bc9273d6149c319690D@',
         cpf: '98765432100',
         role: 1,
       });

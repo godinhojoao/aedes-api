@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AccountsInMemoryRepository } from './accounts/accounts-in-memory-repository.service';
-import { AccountsRepository } from './../../core/repositories/accounts.repository';
+import { AccountsRepository } from '../../domain/repositories/accounts.repository';
 
 @Module({
   providers: [

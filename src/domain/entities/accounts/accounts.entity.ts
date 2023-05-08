@@ -1,5 +1,5 @@
 import { CreateAccountInputDto } from './accounts.dtos';
-import { CryptoAdapter } from '../../../infra/adapters/crypto/CryptoAdapter';
+import { HashAdapter } from 'src/domain/adapters/HashAdapter';
 
 export enum RoleEnum {
   ADMIN = 0,
@@ -19,18 +19,21 @@ export class AccountEntity {
   private constructor(input: AccountEntity) {
     this.name = input.name;
     this.email = input.email;
-    this.password = CryptoAdapter.generateHash(input.password);
+    this.password = input.password;
     this.cpf = input.cpf;
     this.role = input.role;
-    this.id = input.id || CryptoAdapter.generateRandomUUID();
+    this.id = input.id;
   }
 
-  static createAccount(createAccountInput: CreateAccountInputDto) {
+  static createAccount(
+    createAccountInput: CreateAccountInputDto,
+    hashAdapter: HashAdapter,
+  ) {
     return new AccountEntity({
-      id: undefined,
+      id: hashAdapter.generateRandomUUID(),
       name: createAccountInput.name,
       email: createAccountInput.email,
-      password: createAccountInput.password,
+      password: hashAdapter.generateHash(createAccountInput.password),
       cpf: createAccountInput.cpf,
       role: createAccountInput.role === 0 ? RoleEnum.ADMIN : RoleEnum.USER,
     });

@@ -3,6 +3,7 @@ import { AccountEntity } from '../entities/accounts/accounts.entity';
 export type FindOneInput = {
   id?: string;
   cpf?: string;
+  email?: string;
 };
 
 export abstract class AccountsRepository {

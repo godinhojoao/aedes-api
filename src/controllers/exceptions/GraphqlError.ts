@@ -28,7 +28,9 @@ export class GraphqlError {
     this.code = error.extensions.code;
 
     if (error?.extensions?.originalError?.message[0]) {
-      this.detailedMessage = error.extensions.originalError.message[0];
+      const errorMessage = error.extensions.originalError.message;
+      this.detailedMessage =
+        typeof errorMessage === 'string' ? errorMessage : errorMessage[0];
     }
   }
 }

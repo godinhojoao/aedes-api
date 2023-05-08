@@ -7,10 +7,12 @@ import {
   GraphqlError,
   ExternalGraphqlError,
 } from './controllers/exceptions/GraphqlError';
-import { ExceptionsFilter } from './shared/filters/ExceptionsFilter';
+import { ExceptionsFilter } from './core/filters/exception-filters';
+import { CoreModule } from './core/core.module';
 
 @Module({
   imports: [
+    CoreModule,
     ControllersModule,
     GraphQLModule.forRoot({
       autoSchemaFile: 'src/schema.gql',
