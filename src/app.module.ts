@@ -20,6 +20,7 @@ import { CoreModule } from './core/core.module';
       formatError: (error: ExternalGraphqlError) => {
         return new GraphqlError(error);
       },
+      context: ({ req }) => ({ req }),
     }),
   ],
   providers: [

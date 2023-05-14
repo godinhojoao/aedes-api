@@ -8,7 +8,6 @@ import {
   IsUUID,
   Matches,
   ValidateIf,
-  isEmail,
 } from 'class-validator';
 import {
   Field,
@@ -176,4 +175,7 @@ export abstract class AccountToViewDto {
 export abstract class SignInResultDto {
   @Field()
   token: string;
+
+  @Field(() => AccountToViewDto)
+  account: AccountToViewDto;
 }

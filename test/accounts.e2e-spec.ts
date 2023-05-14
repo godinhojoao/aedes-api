@@ -10,6 +10,7 @@ import { HashAdapter } from './../src/domain/adapters/HashAdapter';
 import { CryptoHashAdapter } from './../src/infra/adapters/crypto/CryptoHashAdapter';
 import { JwtAdapter } from './../src/domain/adapters/JwtAdapter';
 import { JwtAdapterImp } from './../src/infra/adapters/jwt/JwtAdapter';
+import { jwtToken } from './mocks/jwtToken';
 
 describe('Accounts Resolvers (e2e)', () => {
   let app: INestApplication;
@@ -44,7 +45,7 @@ describe('Accounts Resolvers (e2e)', () => {
     it('Given valid id should return account', async () => {
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
-        // .set('Authorization', `Bearer token_aqui`)
+        .set('Authorization', jwtToken)
         .send({
           query: `query findAccount ($input: FindAccountInputDto!) {
               findAccount (input: $input) {
@@ -70,6 +71,7 @@ describe('Accounts Resolvers (e2e)', () => {
     it('Given valid cpf should return account', async () => {
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
+        .set('Authorization', jwtToken)
         .send({
           query: `query findAccount ($input: FindAccountInputDto!) {
               findAccount (input: $input) {
@@ -95,6 +97,7 @@ describe('Accounts Resolvers (e2e)', () => {
     it('Given valid email should return account', async () => {
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
+        .set('Authorization', jwtToken)
         .send({
           query: `query findAccount ($input: FindAccountInputDto!) {
               findAccount (input: $input) {
@@ -120,6 +123,7 @@ describe('Accounts Resolvers (e2e)', () => {
     it('Given nonexistent email should return error', async () => {
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
+        .set('Authorization', jwtToken)
         .send({
           query: `query findAccount ($input: FindAccountInputDto!) {
               findAccount (input: $input) {
@@ -144,9 +148,38 @@ describe('Accounts Resolvers (e2e)', () => {
       ]);
     });
 
+    it('Given invalid token should return error', async () => {
+      const response = await request(app.getHttpServer())
+        .post(`/graphql`)
+        .set('Authorization', 'Bearer errortest')
+        .send({
+          query: `query findAccount ($input: FindAccountInputDto!) {
+              findAccount (input: $input) {
+                id
+                name
+                email
+                cpf
+                role
+              }
+            }`,
+          variables: { input: { id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00541' } },
+        });
+      expect(response.statusCode).toBe(200);
+      expect(response.body.data).toBe(null);
+      expect(response.body.errors).toEqual([
+        {
+          code: 'UNAUTHENTICATED',
+          detailedMessage: 'Invalid token',
+          message: 'Invalid token',
+          path: ['findAccount'],
+        },
+      ]);
+    });
+
     it('Given invalid id should return validation error', async () => {
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
+        .set('Authorization', jwtToken)
         .send({
           query: `query findAccount ($input: FindAccountInputDto!) {
               findAccount (input: $input) {
@@ -173,6 +206,7 @@ describe('Accounts Resolvers (e2e)', () => {
     it('Given invalid cpf should return validation error', async () => {
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
+        .set('Authorization', jwtToken)
         .send({
           query: `query findAccount ($input: FindAccountInputDto!) {
               findAccount (input: $input) {
@@ -201,6 +235,7 @@ describe('Accounts Resolvers (e2e)', () => {
     it('Given findAllAccounts should return accounts', async () => {
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
+        .set('Authorization', jwtToken)
         .send({
           query: `query findAllAccounts {
               findAllAccounts {
@@ -390,6 +425,7 @@ describe('Accounts Resolvers (e2e)', () => {
       };
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
+        .set('Authorization', jwtToken)
         .send({
           query: `mutation updateAccount ($input: UpdateAccountInputDto!) {
             updateAccount (input: $input) {
@@ -423,6 +459,7 @@ describe('Accounts Resolvers (e2e)', () => {
       };
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
+        .set('Authorization', jwtToken)
         .send({
           query: `mutation updateAccount ($input: UpdateAccountInputDto!) {
             updateAccount (input: $input) {
@@ -458,6 +495,7 @@ describe('Accounts Resolvers (e2e)', () => {
       };
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
+        .set('Authorization', jwtToken)
         .send({
           query: `mutation updateAccount ($input: UpdateAccountInputDto!) {
             updateAccount (input: $input) {
@@ -494,6 +532,7 @@ describe('Accounts Resolvers (e2e)', () => {
       };
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
+        .set('Authorization', jwtToken)
         .send({
           query: `mutation updateAccount ($input: UpdateAccountInputDto!) {
             updateAccount (input: $input) {
@@ -523,6 +562,7 @@ describe('Accounts Resolvers (e2e)', () => {
     it('Given valid id should return removed account', async () => {
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
+        .set('Authorization', jwtToken)
         .send({
           query: `mutation removeAccount ($input: RemoveAccountInputDto!) {
             removeAccount (input: $input) {
@@ -563,6 +603,13 @@ describe('Accounts Resolvers (e2e)', () => {
           query: `mutation signIn ($input: SignInInputDto!) {
             signIn (input: $input) {
               token
+              account {
+                id
+                name
+                email
+                cpf
+                role
+              }
             }
           }`,
           variables: { input: signInInput },
@@ -570,6 +617,13 @@ describe('Accounts Resolvers (e2e)', () => {
       expect(response.statusCode).toBe(200);
       expect(response.body.data.signIn).toEqual({
         token: expect.any(String),
+        account: {
+          cpf: '12345678900',
+          email: 'john@example.com',
+          id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00541',
+          name: 'John Doe',
+          role: 'ADMIN',
+        },
       });
     });
 

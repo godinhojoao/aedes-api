@@ -17,6 +17,7 @@ enum RoleEnum {
 
 type SignInResultDto {
   token: String!
+  account: AccountToViewDto!
 }
 
 type Query {
@@ -31,18 +32,10 @@ input FindAccountInputDto {
 }
 
 type Mutation {
-  createAccount(input: CreateAccountInputDto!): AccountToViewDto!
   updateAccount(input: UpdateAccountInputDto!): AccountToViewDto!
   removeAccount(input: RemoveAccountInputDto!): AccountToViewDto!
+  createAccount(input: CreateAccountInputDto!): AccountToViewDto!
   signIn(input: SignInInputDto!): SignInResultDto!
-}
-
-input CreateAccountInputDto {
-  name: String!
-  email: String!
-  password: String!
-  cpf: String!
-  role: RoleEnum
 }
 
 input UpdateAccountInputDto {
@@ -56,6 +49,14 @@ input UpdateAccountInputDto {
 
 input RemoveAccountInputDto {
   id: String!
+}
+
+input CreateAccountInputDto {
+  name: String!
+  email: String!
+  password: String!
+  cpf: String!
+  role: RoleEnum
 }
 
 input SignInInputDto {

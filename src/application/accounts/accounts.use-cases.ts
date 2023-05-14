@@ -50,7 +50,7 @@ export class AccountsUseCases {
     return AccountMapper.toView(deletedAccount);
   }
 
-  signIn(input: SignInInputDto): string {
+  signIn(input: SignInInputDto): any {
     const account = this.accountsRepository.findOne({ email: input.email });
     if (!account) {
       throw new BadRequestException('Invalid email or password.');
@@ -66,7 +66,12 @@ export class AccountsUseCases {
     const token = this.jwtAdapter.generateToken({
       id: account.id,
       email: account.email,
+      name: account.name,
+      role: account.role,
     });
-    return token;
+    return {
+      account: AccountMapper.toView(account),
+      token,
+    };
   }
 }

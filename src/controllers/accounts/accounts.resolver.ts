@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 import { AccountsUseCases } from '../../application/accounts/accounts.use-cases';
 import {
   AccountToViewDto,
@@ -11,6 +11,14 @@ import {
 } from '../../domain/entities/accounts/accounts.dtos';
 import { SkipAuthentication } from '../../core/decorators/SkipAuthentication';
 import { BadRequestException } from '@nestjs/common';
+import { JwtTokenPayload } from './../../domain/adapters/JwtAdapter';
+import { Roles } from './../../core/decorators/Roles';
+import { RoleEnum } from 'src/domain/entities/accounts/accounts.entity';
+
+type AuthenticatedRequest = {
+  account: JwtTokenPayload;
+};
+// @Context('req') req: AuthenticatedRequest // usar isso dentro de alguma func dps
 
 @Resolver(() => AccountToViewDto)
 export class AccountsResolver {
@@ -31,24 +39,26 @@ export class AccountsResolver {
   }
 
   @Mutation(() => AccountToViewDto)
-  createAccount(@Args('input') input: CreateAccountInputDto): AccountToViewDto {
-    return this.accountsUseCases.create(input);
-  }
-
-  @Mutation(() => AccountToViewDto)
   updateAccount(@Args('input') input: UpdateAccountInputDto): AccountToViewDto {
     return this.accountsUseCases.update(input);
   }
 
+  @Roles('ADMIN')
   @Mutation(() => AccountToViewDto)
   removeAccount(@Args('input') input: RemoveAccountInputDto): AccountToViewDto {
     return this.accountsUseCases.remove(input.id);
   }
 
   @SkipAuthentication()
+  @Mutation(() => AccountToViewDto)
+  createAccount(@Args('input') input: CreateAccountInputDto): AccountToViewDto {
+    return this.accountsUseCases.create(input);
+  }
+
+  @SkipAuthentication()
   @Mutation(() => SignInResultDto)
   async signIn(@Args('input') input: SignInInputDto): Promise<SignInResultDto> {
-    const token = await this.accountsUseCases.signIn(input);
-    return { token };
+    const result = this.accountsUseCases.signIn(input);
+    return result;
   }
 }

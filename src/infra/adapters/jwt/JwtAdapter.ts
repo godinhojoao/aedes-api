@@ -1,24 +1,28 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
-import { JwtAdapter } from './../../../domain/adapters/JwtAdapter';
+import {
+  DecodedTokenResult,
+  JwtAdapter,
+  JwtTokenPayload,
+} from './../../../domain/adapters/JwtAdapter';
 
 @Injectable()
 export class JwtAdapterImp implements JwtAdapter {
   // change here to .env
   private secretKey = 'test-secret-key';
-  private options = {
-    expiresIn: '2 days',
-  };
 
-  public generateToken(payload: any): string {
-    const token = jwt.sign(payload, this.secretKey, this.options);
+  public generateToken(payload: JwtTokenPayload, expiresIn = '2d'): string {
+    const token = jwt.sign({ data: payload }, this.secretKey, { expiresIn });
     return token;
   }
 
-  public verifyToken(token: string): any {
+  public decodeToken(token: string): DecodedTokenResult | null {
     try {
-      const decoded = jwt.verify(token, this.secretKey);
-      return decoded;
+      const decoded = jwt.verify(
+        token,
+        this.secretKey,
+      ) as DecodedTokenResult | null;
+      return decoded || null;
     } catch (error) {
       throw new UnauthorizedException('Invalid token');
     }

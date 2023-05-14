@@ -2,14 +2,11 @@ import { AccountToViewDto } from '../../domain/entities/accounts/accounts.dtos';
 import { AccountEntity } from '../../domain/entities/accounts/accounts.entity';
 
 export class AccountMapper {
-  public static toView(
-    account: AccountEntity,
-  ): AccountToViewDto & { password: string } {
+  public static toView(account: AccountEntity): AccountToViewDto {
     return {
       id: account.id,
       name: account.name,
       email: account.email,
-      password: account.password,
       cpf: account.cpf,
       role: account.role,
     };

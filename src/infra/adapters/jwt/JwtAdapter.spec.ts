@@ -5,7 +5,12 @@ import { JwtAdapterImp } from './JwtAdapter';
 
 jest.mock('jsonwebtoken', () => ({
   sign: jest.fn(() => 'mocked-token'),
-  verify: jest.fn(() => ({ userId: 1 })),
+  verify: jest.fn(() => ({
+    id: 'abc1',
+    email: 'dale@gmail.com',
+    name: 'joao',
+    role: 1,
+  })),
 }));
 
 describe('JwtAdapter', () => {
@@ -25,22 +30,36 @@ describe('JwtAdapter', () => {
 
   describe('generateToken', () => {
     it('should generate a JWT token', () => {
-      const payload = { userId: 1 };
+      const payload = {
+        id: 'abc1',
+        email: 'dale@gmail.com',
+        name: 'joao',
+        role: 1,
+      };
       const token = service.generateToken(payload);
 
       expect(token).toBe('mocked-token');
-      expect(jwt.sign).toHaveBeenCalledWith(payload, 'test-secret-key', {
-        expiresIn: '2 days',
-      });
+      expect(jwt.sign).toHaveBeenCalledWith(
+        { data: payload },
+        'test-secret-key',
+        {
+          expiresIn: '2d',
+        },
+      );
     });
   });
 
-  describe('verifyToken', () => {
+  describe('decodeToken', () => {
     it('Given valid JWT token should decode payload', () => {
       const token = 'valid-token';
-      const decoded = service.verifyToken(token);
+      const decoded = service.decodeToken(token);
 
-      expect(decoded).toEqual({ userId: 1 });
+      expect(decoded).toEqual({
+        id: 'abc1',
+        email: 'dale@gmail.com',
+        name: 'joao',
+        role: 1,
+      });
       expect(jwt.verify).toHaveBeenCalledWith(token, 'test-secret-key');
     });
 
@@ -50,7 +69,7 @@ describe('JwtAdapter', () => {
         throw new Error('Invalid token');
       });
 
-      expect(() => service.verifyToken(token)).toThrow(UnauthorizedException);
+      expect(() => service.decodeToken(token)).toThrow(UnauthorizedException);
       expect(jwt.verify).toHaveBeenCalledWith(token, 'test-secret-key');
     });
   });

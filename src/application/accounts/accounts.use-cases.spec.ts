@@ -47,7 +47,6 @@ describe('AccountsUseCases', () => {
         id: expect.any(String),
         name: 'John Doe',
         email: 'johnusecase33@example.com',
-        password: expect.any(String),
         cpf: '74238136055',
         role: 1,
       });
@@ -92,7 +91,6 @@ describe('AccountsUseCases', () => {
         id: createdAccountId,
         name: 'Testing name',
         email: 'updated@example.com',
-        password: expect.any(String),
         cpf: '12345678900',
         role: 1,
       });
@@ -120,7 +118,6 @@ describe('AccountsUseCases', () => {
         id: createdAccountId,
         name: 'Testing name',
         email: 'updated@example.com',
-        password: expect.any(String),
         cpf: '12345678900',
         role: 1,
       });
@@ -132,7 +129,6 @@ describe('AccountsUseCases', () => {
         id: expect.any(String),
         name: 'Jane Smith',
         email: 'jane@example.com',
-        password: expect.any(String),
         cpf: '98765432100',
         role: 1,
       });
@@ -147,7 +143,6 @@ describe('AccountsUseCases', () => {
         id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00542',
         name: 'Jane Smith',
         email: 'jane@example.com',
-        password: expect.any(String),
         cpf: '98765432100',
         role: 1,
       });
@@ -168,11 +163,20 @@ describe('AccountsUseCases', () => {
 
   describe('signIn', () => {
     it('Given correct email and password should return token', () => {
-      const token = service.signIn({
+      const result = service.signIn({
         email: 'john@example.com',
         password: 'Demo@123',
       });
-      expect(token).toEqual(expect.any(String));
+      expect(result).toEqual({
+        token: expect.any(String),
+        account: {
+          cpf: '12345678900',
+          email: 'john@example.com',
+          id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00541',
+          name: 'John Doe',
+          role: 0,
+        },
+      });
     });
 
     it('Given incorrect email should return error', () => {
