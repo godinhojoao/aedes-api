@@ -10,7 +10,8 @@ import { HashAdapter } from './../src/domain/adapters/HashAdapter';
 import { CryptoHashAdapter } from './../src/infra/adapters/crypto/CryptoHashAdapter';
 import { JwtAdapter } from './../src/domain/adapters/JwtAdapter';
 import { JwtAdapterImp } from './../src/infra/adapters/jwt/JwtAdapter';
-import { jwtToken } from './mocks/jwtToken';
+import { userJwtToken } from './mocks/userJwtToken';
+import { adminJwtToken } from './mocks/adminJwtToken';
 
 describe('Accounts Resolvers (e2e)', () => {
   let app: INestApplication;
@@ -45,7 +46,7 @@ describe('Accounts Resolvers (e2e)', () => {
     it('Given valid id should return account', async () => {
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
-        .set('Authorization', jwtToken)
+        .set('Authorization', userJwtToken)
         .send({
           query: `query findAccount ($input: FindAccountInputDto!) {
               findAccount (input: $input) {
@@ -71,7 +72,7 @@ describe('Accounts Resolvers (e2e)', () => {
     it('Given valid cpf should return account', async () => {
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
-        .set('Authorization', jwtToken)
+        .set('Authorization', userJwtToken)
         .send({
           query: `query findAccount ($input: FindAccountInputDto!) {
               findAccount (input: $input) {
@@ -97,7 +98,7 @@ describe('Accounts Resolvers (e2e)', () => {
     it('Given valid email should return account', async () => {
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
-        .set('Authorization', jwtToken)
+        .set('Authorization', userJwtToken)
         .send({
           query: `query findAccount ($input: FindAccountInputDto!) {
               findAccount (input: $input) {
@@ -123,7 +124,7 @@ describe('Accounts Resolvers (e2e)', () => {
     it('Given nonexistent email should return error', async () => {
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
-        .set('Authorization', jwtToken)
+        .set('Authorization', userJwtToken)
         .send({
           query: `query findAccount ($input: FindAccountInputDto!) {
               findAccount (input: $input) {
@@ -179,7 +180,7 @@ describe('Accounts Resolvers (e2e)', () => {
     it('Given invalid id should return validation error', async () => {
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
-        .set('Authorization', jwtToken)
+        .set('Authorization', userJwtToken)
         .send({
           query: `query findAccount ($input: FindAccountInputDto!) {
               findAccount (input: $input) {
@@ -206,7 +207,7 @@ describe('Accounts Resolvers (e2e)', () => {
     it('Given invalid cpf should return validation error', async () => {
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
-        .set('Authorization', jwtToken)
+        .set('Authorization', userJwtToken)
         .send({
           query: `query findAccount ($input: FindAccountInputDto!) {
               findAccount (input: $input) {
@@ -235,7 +236,7 @@ describe('Accounts Resolvers (e2e)', () => {
     it('Given findAllAccounts should return accounts', async () => {
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
-        .set('Authorization', jwtToken)
+        .set('Authorization', userJwtToken)
         .send({
           query: `query findAllAccounts {
               findAllAccounts {
@@ -425,7 +426,7 @@ describe('Accounts Resolvers (e2e)', () => {
       };
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
-        .set('Authorization', jwtToken)
+        .set('Authorization', userJwtToken)
         .send({
           query: `mutation updateAccount ($input: UpdateAccountInputDto!) {
             updateAccount (input: $input) {
@@ -459,7 +460,7 @@ describe('Accounts Resolvers (e2e)', () => {
       };
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
-        .set('Authorization', jwtToken)
+        .set('Authorization', userJwtToken)
         .send({
           query: `mutation updateAccount ($input: UpdateAccountInputDto!) {
             updateAccount (input: $input) {
@@ -495,7 +496,7 @@ describe('Accounts Resolvers (e2e)', () => {
       };
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
-        .set('Authorization', jwtToken)
+        .set('Authorization', userJwtToken)
         .send({
           query: `mutation updateAccount ($input: UpdateAccountInputDto!) {
             updateAccount (input: $input) {
@@ -532,7 +533,7 @@ describe('Accounts Resolvers (e2e)', () => {
       };
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
-        .set('Authorization', jwtToken)
+        .set('Authorization', userJwtToken)
         .send({
           query: `mutation updateAccount ($input: UpdateAccountInputDto!) {
             updateAccount (input: $input) {
@@ -559,10 +560,38 @@ describe('Accounts Resolvers (e2e)', () => {
   });
 
   describe('removeAccount', () => {
-    it('Given valid id should return removed account', async () => {
+    it('Given valid id and invalid user jwt token should return error', async () => {
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
-        .set('Authorization', jwtToken)
+        .set('Authorization', userJwtToken)
+        .send({
+          query: `mutation removeAccount ($input: RemoveAccountInputDto!) {
+            removeAccount (input: $input) {
+              id
+              name
+              email
+              cpf
+              role
+            }
+          }`,
+          variables: { input: { id: createdAccountId } },
+        });
+      expect(response.statusCode).toBe(200);
+      expect(response.body.data).toBe(null);
+      expect(response.body.errors).toEqual([
+        {
+          code: 'FORBIDDEN',
+          detailedMessage: 'Forbidden resource',
+          message: 'Forbidden resource',
+          path: ['removeAccount'],
+        },
+      ]);
+    });
+
+    it('Given valid id and valid admin jwt token should return removed account', async () => {
+      const response = await request(app.getHttpServer())
+        .post(`/graphql`)
+        .set('Authorization', adminJwtToken)
         .send({
           query: `mutation removeAccount ($input: RemoveAccountInputDto!) {
             removeAccount (input: $input) {

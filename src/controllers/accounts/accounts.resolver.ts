@@ -13,7 +13,7 @@ import { SkipAuthentication } from '../../core/decorators/SkipAuthentication';
 import { BadRequestException } from '@nestjs/common';
 import { JwtTokenPayload } from './../../domain/adapters/JwtAdapter';
 import { Roles } from './../../core/decorators/Roles';
-import { RoleEnum } from 'src/domain/entities/accounts/accounts.entity';
+import { RoleEnum } from './../../domain/entities/accounts/accounts.entity';
 
 type AuthenticatedRequest = {
   account: JwtTokenPayload;

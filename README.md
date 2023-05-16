@@ -29,7 +29,7 @@
 ## Installation
 
 ```bash
-$ nvm install 18.13
+$ nvm install 18.15
 $ nvm use
 $ npm install
 ```

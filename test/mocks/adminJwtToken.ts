@@ -8,4 +8,4 @@ const tokenPayload = {
   role: 0,
 };
 
-export const jwtToken = `Bearer ${jwtAdapter.generateToken(tokenPayload)}`;
+export const adminJwtToken = `Bearer ${jwtAdapter.generateToken(tokenPayload)}`;
