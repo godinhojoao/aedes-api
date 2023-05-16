@@ -2,14 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
-import { AccountsResolver } from './../src/controllers/accounts/accounts.resolver';
-import { AccountsUseCases } from './../src/application/accounts/accounts.use-cases';
-import { AccountsRepository } from '../src/domain/repositories/accounts.repository';
 import { AccountsInMemoryRepository } from './../src/infra/repositories/accounts/accounts-in-memory-repository.service';
-import { HashAdapter } from './../src/domain/adapters/HashAdapter';
-import { CryptoHashAdapter } from './../src/infra/adapters/crypto/CryptoHashAdapter';
-import { JwtAdapter } from './../src/domain/adapters/JwtAdapter';
-import { JwtAdapterImp } from './../src/infra/adapters/jwt/JwtAdapter';
 import { userJwtToken } from './mocks/userJwtToken';
 import { adminJwtToken } from './mocks/adminJwtToken';
 
@@ -17,30 +10,16 @@ describe('Accounts Resolvers (e2e)', () => {
   let app: INestApplication;
   let createdAccountId: string;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
-      providers: [
-        AccountsResolver,
-        AccountsUseCases,
-        {
-          provide: AccountsRepository,
-          useClass: AccountsInMemoryRepository,
-        },
-        {
-          provide: HashAdapter,
-          useClass: CryptoHashAdapter,
-        },
-        {
-          provide: JwtAdapter,
-          useClass: JwtAdapterImp,
-        },
-      ],
     }).compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
   });
+
+  afterAll(async () => await app.close());
 
   describe('findAccount', () => {
     it('Given valid id should return account', async () => {

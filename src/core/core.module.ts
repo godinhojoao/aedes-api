@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AuthGuard } from './guards/auth.guard';
 import { APP_GUARD } from '@nestjs/core';
-import { AdaptersModule } from './../infra/adapters/adapters.module';
+import { InfraModule } from './../infra/infra.module';
 
 @Module({
   providers: [
@@ -10,6 +10,6 @@ import { AdaptersModule } from './../infra/adapters/adapters.module';
       useClass: AuthGuard,
     },
   ],
-  imports: [AdaptersModule],
+  imports: [InfraModule],
 })
 export class CoreModule {}

@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
-import { RepositoriesModule } from '../infra/repositories/repositories.module';
 import { AccountsUseCases } from './accounts/accounts.use-cases';
-import { AdaptersModule } from './../infra/adapters/adapters.module';
+import { InfraModule } from './../infra/infra.module';
 
 @Module({
-  imports: [RepositoriesModule, AdaptersModule],
+  imports: [InfraModule],
   providers: [AccountsUseCases],
   exports: [AccountsUseCases],
 })
