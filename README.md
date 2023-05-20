@@ -53,9 +53,25 @@ $ npm run start:prod
 # unit tests
 $ npm run test
 
-# e2e tests
+# e2e tests1
 $ npm run test:e2e
 
 # test coverage
 $ npm run test:cov
+```
+
+## Migrations && seeds
+
+```bash
+# Generates a new migration based on changes detected in your Prisma schema and applies it to the database
+$ npm run prisma:migrate:dev
+
+# Reset all the database migrations based on schema and then run all migrations
+$ npm run prisma:migrate:reset
+
+# Run all seeds
+$ npm run prisma:seed
+
+# Run all migrations and seeds, verifying schema again
+$ npm run reset-db
 ```

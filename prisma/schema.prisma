@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AccountRoles {
+  USER
+  ADMIN
+}
+
+enum ComplaintStatuses {
+  WAITING
+  DOING
+  SOLVED
+}
+
+model Account {
+  id                     String       @id @default(uuid()) @db.Uuid
+  email                  String       @unique
+  name                   String       @db.VarChar(255)
+  password               String
+  cpf                    String       @db.VarChar(11)
+  role                   AccountRoles @default(USER)
+  createdAt              DateTime     @default(now())
+  complaints_owner       Complaint[]  @relation("OwnerToComplaint")
+  complaints_denunciator Complaint[]  @relation("DenunciatorToComplaint")
+
+  @@map("accounts")
+}
+
+model Location {
+  id           String      @id @default(uuid()) @db.Uuid
+  description  String      @db.VarChar(5000)
+  latitude     Float
+  longitude    Float
+  cep          String      @db.VarChar(8)
+  state        String      @db.VarChar(2)
+  city         String      @db.VarChar(30)
+  street       String      @db.VarChar(255)
+  neighborhood String      @db.VarChar(255)
+  createdAt    DateTime    @default(now())
+  Complaint    Complaint[]
+
+  @@map("locations")
+}
+
+model Complaint {
+  id        String            @id @default(uuid()) @db.Uuid
+  status    ComplaintStatuses @default(WAITING)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  location_id String   @db.Uuid
+  location    Location @relation(fields: [location_id], references: [id])
+
+  denunciator_id String  @db.Uuid
+  denunciator    Account @relation("OwnerToComplaint", fields: [denunciator_id], references: [id])
+
+  solver_id String?  @db.Uuid
+  solver    Account? @relation("DenunciatorToComplaint", fields: [solver_id], references: [id])
+
+  @@map("complaints")
+}
