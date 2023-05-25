@@ -5,6 +5,8 @@
 ## Description
 
 - A GraphQL API consumed in two applications, one mobile and the other web. In which the main purpose is to control the cases of Aedes aegypti mosquitoes in the city of Bagé in Rio Grande do Sul, Brazil.
+- Aedes-web: https://github.com/godinhojoao/aedes-web
+- Aedes-app: not done yet
 - About Aedes Aegypti: https://www.ecdc.europa.eu/en/disease-vectors/facts/mosquito-factsheets/aedes-aegypti
 
 ### This API has some features, for example:
