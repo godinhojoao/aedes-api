@@ -21,240 +21,6 @@ describe('Accounts Resolver (e2e)', () => {
 
   afterAll(async () => await app.close());
 
-  describe('findAccount', () => {
-    it('Given valid id should return account', async () => {
-      const response = await request(app.getHttpServer())
-        .post(`/graphql`)
-        .set('Authorization', userJwtToken)
-        .send({
-          query: `query findAccount ($input: FindAccountInputDto!) {
-              findAccount (input: $input) {
-                id
-                name
-                email
-                cpf
-                role
-              }
-            }`,
-          variables: { input: { id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00541' } },
-        });
-      expect(response.statusCode).toBe(200);
-      expect(response.body.data.findAccount).toEqual({
-        id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00541',
-        name: 'John Doe',
-        email: 'john@example.com',
-        cpf: '12345678900',
-        role: 'ADMIN',
-      });
-    });
-
-    it('Given valid cpf should return account', async () => {
-      const response = await request(app.getHttpServer())
-        .post(`/graphql`)
-        .set('Authorization', userJwtToken)
-        .send({
-          query: `query findAccount ($input: FindAccountInputDto!) {
-              findAccount (input: $input) {
-                id
-                name
-                email
-                cpf
-                role
-              }
-            }`,
-          variables: { input: { cpf: '12345678900' } },
-        });
-      expect(response.statusCode).toBe(200);
-      expect(response.body.data.findAccount).toEqual({
-        id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00541',
-        name: 'John Doe',
-        email: 'john@example.com',
-        cpf: '12345678900',
-        role: 'ADMIN',
-      });
-    });
-
-    it('Given valid email should return account', async () => {
-      const response = await request(app.getHttpServer())
-        .post(`/graphql`)
-        .set('Authorization', userJwtToken)
-        .send({
-          query: `query findAccount ($input: FindAccountInputDto!) {
-              findAccount (input: $input) {
-                id
-                name
-                email
-                cpf
-                role
-              }
-            }`,
-          variables: { input: { email: 'john@example.com' } },
-        });
-      expect(response.statusCode).toBe(200);
-      expect(response.body.data.findAccount).toEqual({
-        id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00541',
-        name: 'John Doe',
-        email: 'john@example.com',
-        cpf: '12345678900',
-        role: 'ADMIN',
-      });
-    });
-
-    it('Given nonexistent email should return error', async () => {
-      const response = await request(app.getHttpServer())
-        .post(`/graphql`)
-        .set('Authorization', userJwtToken)
-        .send({
-          query: `query findAccount ($input: FindAccountInputDto!) {
-              findAccount (input: $input) {
-                id
-                name
-                email
-                cpf
-                role
-              }
-            }`,
-          variables: { input: { email: 'testingnonexistent@example.com' } },
-        });
-      expect(response.statusCode).toBe(200);
-      expect(response.body.data).toBe(null);
-      expect(response.body.errors).toEqual([
-        {
-          code: 'BAD_REQUEST',
-          detailedMessage: 'No account found',
-          message: 'No account found',
-          path: ['findAccount'],
-        },
-      ]);
-    });
-
-    it('Given invalid token should return error', async () => {
-      const response = await request(app.getHttpServer())
-        .post(`/graphql`)
-        .set('Authorization', 'Bearer errortest')
-        .send({
-          query: `query findAccount ($input: FindAccountInputDto!) {
-              findAccount (input: $input) {
-                id
-                name
-                email
-                cpf
-                role
-              }
-            }`,
-          variables: { input: { id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00541' } },
-        });
-      expect(response.statusCode).toBe(200);
-      expect(response.body.data).toBe(null);
-      expect(response.body.errors).toEqual([
-        {
-          code: 'UNAUTHENTICATED',
-          detailedMessage: 'Invalid token',
-          message: 'Invalid token',
-          path: ['findAccount'],
-        },
-      ]);
-    });
-
-    it('Given invalid id should return validation error', async () => {
-      const response = await request(app.getHttpServer())
-        .post(`/graphql`)
-        .set('Authorization', userJwtToken)
-        .send({
-          query: `query findAccount ($input: FindAccountInputDto!) {
-              findAccount (input: $input) {
-                id
-                name
-                email
-                cpf
-                role
-              }
-            }`,
-          variables: { input: { id: '123' } },
-        });
-      expect(response.body.data).toBe(null);
-      expect(response.body.errors).toEqual([
-        {
-          code: 'BAD_REQUEST',
-          detailedMessage: 'id must be a UUID',
-          message: 'Bad Request Exception',
-          path: ['findAccount'],
-        },
-      ]);
-    });
-
-    it('Given invalid cpf should return validation error', async () => {
-      const response = await request(app.getHttpServer())
-        .post(`/graphql`)
-        .set('Authorization', userJwtToken)
-        .send({
-          query: `query findAccount ($input: FindAccountInputDto!) {
-              findAccount (input: $input) {
-                id
-                name
-                email
-                cpf
-                role
-              }
-            }`,
-          variables: { input: { cpf: '123' } },
-        });
-      expect(response.body.data).toBe(null);
-      expect(response.body.errors).toEqual([
-        {
-          code: 'BAD_REQUEST',
-          detailedMessage: 'cpf must match /^\\d{11}$/ regular expression',
-          message: 'Bad Request Exception',
-          path: ['findAccount'],
-        },
-      ]);
-    });
-  });
-
-  describe('findAllAccounts', () => {
-    it('Given findAllAccounts should return accounts', async () => {
-      const response = await request(app.getHttpServer())
-        .post(`/graphql`)
-        .set('Authorization', userJwtToken)
-        .send({
-          query: `query findAllAccounts {
-              findAllAccounts {
-                id
-                name
-                email
-                cpf
-                role
-              }
-            }`,
-          variables: { input: { id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00541' } },
-        });
-      expect(response.statusCode).toBe(200);
-      expect(response.body.data.findAllAccounts).toEqual([
-        {
-          cpf: '12345678900',
-          email: 'john@example.com',
-          id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00541',
-          name: 'John Doe',
-          role: 'ADMIN',
-        },
-        {
-          cpf: '98765432100',
-          email: 'jane@example.com',
-          id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00542',
-          name: 'Jane Smith',
-          role: 'USER',
-        },
-        {
-          cpf: '45678912300',
-          email: 'bob@example.com',
-          id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00543',
-          name: 'Bob Johnson',
-          role: 'USER',
-        },
-      ]);
-    });
-  });
-
   describe('createAccount', () => {
     it('Given valid input should return created account', async () => {
       const createAccountInput = {
@@ -538,14 +304,14 @@ describe('Accounts Resolver (e2e)', () => {
     });
   });
 
-  describe('removeAccount', () => {
+  describe('deleteAccount', () => {
     it('Given valid id and invalid user jwt token should return error', async () => {
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
         .set('Authorization', userJwtToken)
         .send({
-          query: `mutation removeAccount ($input: RemoveAccountInputDto!) {
-            removeAccount (input: $input) {
+          query: `mutation deleteAccount ($input: DeleteAccountInputDto!) {
+            deleteAccount (input: $input) {
               id
               name
               email
@@ -562,7 +328,7 @@ describe('Accounts Resolver (e2e)', () => {
           code: 'FORBIDDEN',
           detailedMessage: 'Forbidden resource',
           message: 'Forbidden resource',
-          path: ['removeAccount'],
+          path: ['deleteAccount'],
         },
       ]);
     });
@@ -572,8 +338,8 @@ describe('Accounts Resolver (e2e)', () => {
         .post(`/graphql`)
         .set('Authorization', adminJwtToken)
         .send({
-          query: `mutation removeAccount ($input: RemoveAccountInputDto!) {
-            removeAccount (input: $input) {
+          query: `mutation deleteAccount ($input: DeleteAccountInputDto!) {
+            deleteAccount (input: $input) {
               id
               name
               email
@@ -584,7 +350,7 @@ describe('Accounts Resolver (e2e)', () => {
           variables: { input: { id: createdAccountId } },
         });
       expect(response.statusCode).toBe(200);
-      expect(response.body.data.removeAccount).toMatchObject({
+      expect(response.body.data.deleteAccount).toMatchObject({
         id: createdAccountId,
         name: 'testing name e2e',
         email: 'test@gmail.com',

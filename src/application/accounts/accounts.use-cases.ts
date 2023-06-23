@@ -3,7 +3,6 @@ import {
   CreateAccountInputDto,
   UpdateAccountInputDto,
   AccountToViewDto,
-  FindAccountInputDto,
   SignInInputDto,
   SignInResultDto,
 } from '../../domain/entities/account/account.dtos';
@@ -21,23 +20,10 @@ export class AccountsUseCases {
     private readonly jwtAdapter: JwtAdapter,
   ) {}
 
-  findAll(): AccountToViewDto[] {
-    const accounts = this.accountsRepository.findAll();
-    return AccountMapper.manyToView(accounts);
-  }
-
   create(input: CreateAccountInputDto): AccountToViewDto {
     const accountEntity = AccountEntity.createAccount(input, this.hashAdapter);
     const createdAccount = this.accountsRepository.create(accountEntity);
     return AccountMapper.toView(createdAccount);
-  }
-
-  findOne(input: FindAccountInputDto): AccountToViewDto {
-    const account = this.accountsRepository.findOne(input);
-    if (!account) {
-      throw new BadRequestException('No account found');
-    }
-    return AccountMapper.toView(account);
   }
 
   update(input: UpdateAccountInputDto): AccountToViewDto {

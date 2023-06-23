@@ -7,7 +7,6 @@ import {
   IsStrongPassword,
   IsUUID,
   Matches,
-  ValidateIf,
 } from 'class-validator';
 import {
   Field,
@@ -111,29 +110,7 @@ export abstract class UpdateAccountInputDto {
 }
 
 @InputType()
-export abstract class FindAccountInputDto {
-  @Field({ nullable: true })
-  @ValidateIf((input) => !input.cpf && !input.email)
-  @IsNotEmpty()
-  @IsUUID('4')
-  public id?: string;
-
-  @Field({ nullable: true })
-  @ValidateIf((input) => !input.id && !input.email)
-  @IsNotEmpty()
-  @IsString()
-  @Matches(CPF_REGEX)
-  public cpf?: string;
-
-  @Field({ nullable: true })
-  @ValidateIf((input) => !input.id && !input.cpf)
-  @IsNotEmpty()
-  @IsEmail()
-  public email?: string;
-}
-
-@InputType()
-export abstract class RemoveAccountInputDto {
+export abstract class DeleteAccountInputDto {
   @Field()
   @IsNotEmpty()
   @IsUUID('4')

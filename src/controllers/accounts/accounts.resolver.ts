@@ -1,16 +1,14 @@
-import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Context } from '@nestjs/graphql';
 import { AccountsUseCases } from '../../application/accounts/accounts.use-cases';
 import {
   AccountToViewDto,
   CreateAccountInputDto,
   UpdateAccountInputDto,
-  FindAccountInputDto,
-  RemoveAccountInputDto,
+  DeleteAccountInputDto,
   SignInInputDto,
   SignInResultDto,
 } from '../../domain/entities/account/account.dtos';
 import { SkipAuthentication } from '../../core/decorators/SkipAuthentication';
-import { BadRequestException } from '@nestjs/common';
 import { JwtTokenPayload } from './../../domain/adapters/JwtAdapter';
 import { Roles } from './../../core/decorators/Roles';
 
@@ -23,20 +21,6 @@ type AuthenticatedRequest = {
 export class AccountsResolver {
   constructor(private readonly accountsUseCases: AccountsUseCases) {}
 
-  @Query(() => [AccountToViewDto])
-  findAllAccounts(): AccountToViewDto[] {
-    return this.accountsUseCases.findAll();
-  }
-
-  @Query(() => AccountToViewDto)
-  findAccount(@Args('input') input: FindAccountInputDto): AccountToViewDto {
-    const account = this.accountsUseCases.findOne(input);
-    if (!account) {
-      throw new BadRequestException('No account found');
-    }
-    return account;
-  }
-
   @Mutation(() => AccountToViewDto)
   updateAccount(@Args('input') input: UpdateAccountInputDto): AccountToViewDto {
     return this.accountsUseCases.update(input);
@@ -44,7 +28,7 @@ export class AccountsResolver {
 
   @Roles('ADMIN')
   @Mutation(() => AccountToViewDto)
-  removeAccount(@Args('input') input: RemoveAccountInputDto): AccountToViewDto {
+  deleteAccount(@Args('input') input: DeleteAccountInputDto): AccountToViewDto {
     return this.accountsUseCases.remove(input.id);
   }
 

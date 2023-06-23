@@ -111,56 +111,6 @@ describe('AccountsUseCases', () => {
     });
   });
 
-  describe('findOne', () => {
-    it('Given valid id should return account', () => {
-      const account = service.findOne({ id: createdAccountId });
-      expect(account).toEqual({
-        id: createdAccountId,
-        name: 'Testing name',
-        email: 'updated@example.com',
-        cpf: '12345678900',
-        role: 1,
-      });
-    });
-
-    it('Given valid cpf should return account', () => {
-      const account = service.findOne({ cpf: '98765432100' });
-      expect(account).toEqual({
-        id: expect.any(String),
-        name: 'Jane Smith',
-        email: 'jane@example.com',
-        cpf: '98765432100',
-        role: 1,
-      });
-    });
-
-    it('Given valid cpf and id should return account', () => {
-      const account = service.findOne({
-        id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00542',
-        cpf: '98765432100',
-      });
-      expect(account).toEqual({
-        id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00542',
-        name: 'Jane Smith',
-        email: 'jane@example.com',
-        cpf: '98765432100',
-        role: 1,
-      });
-    });
-
-    it('Given inexistent id should return error', () => {
-      const noIdCall = () => service.findOne({ id: 'invalid test' });
-      expect(noIdCall).toThrowError(BadRequestException);
-      expect(noIdCall).toThrowError('No account found');
-    });
-
-    it('Given inexistent cpf should return error', () => {
-      const noCpfCall = () => service.findOne({ cpf: 'invalid test' });
-      expect(noCpfCall).toThrowError(BadRequestException);
-      expect(noCpfCall).toThrowError('No account found');
-    });
-  });
-
   describe('signIn', () => {
     it('Given correct email and password should return token', () => {
       const result = service.signIn({
