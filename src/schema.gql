@@ -20,9 +20,64 @@ type SignInResultDto {
   account: AccountToViewDto!
 }
 
+type LocationToViewDto {
+  id: String!
+  city: String!
+  state: String!
+  street: String!
+  neighborhood: String!
+  cep: String!
+  number: String!
+}
+
+type ComplaintToViewDto {
+  id: String!
+  status: StatusesEnum!
+  location: LocationToViewDto!
+  solver: AccountToViewDto
+  description: String!
+  solverDescription: String
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+
+enum StatusesEnum {
+  WAITING
+  DOING
+  SOLVED
+  REJECTED
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+}
+
+type ComplaintItemToViewDto {
+  id: String!
+  status: StatusesEnum!
+  description: String!
+  city: String!
+  formattedAddress: String!
+  createdAt: DateTime!
+}
+
+type PaginatedComplaintsToViewDto {
+  items: [ComplaintItemToViewDto!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
 type Query {
   findAllAccounts: [AccountToViewDto!]!
   findAccount(input: FindAccountInputDto!): AccountToViewDto!
+  findAllComplaints(input: FindAllComplaintsInputDto!): PaginatedComplaintsToViewDto!
+  findComplaint(input: FindComplaintInputDto!): ComplaintToViewDto!
 }
 
 input FindAccountInputDto {
@@ -31,11 +86,22 @@ input FindAccountInputDto {
   email: String
 }
 
+input FindAllComplaintsInputDto {
+  limit: Int!
+  offset: Int!
+}
+
+input FindComplaintInputDto {
+  id: String!
+}
+
 type Mutation {
   updateAccount(input: UpdateAccountInputDto!): AccountToViewDto!
   removeAccount(input: RemoveAccountInputDto!): AccountToViewDto!
   createAccount(input: CreateAccountInputDto!): AccountToViewDto!
   signIn(input: SignInInputDto!): SignInResultDto!
+  createComplaint(input: CreateComplaintInputDto!): ComplaintToViewDto!
+  updateComplaint(input: UpdateComplaintInputDto!): ComplaintToViewDto!
 }
 
 input UpdateAccountInputDto {
@@ -62,4 +128,30 @@ input CreateAccountInputDto {
 input SignInInputDto {
   email: String!
   password: String!
+}
+
+input CreateComplaintInputDto {
+  location: LocationInputDto!
+  denunciatorId: String!
+  description: String!
+  solverId: String
+  status: StatusesEnum
+}
+
+input LocationInputDto {
+  id: String
+  city: String!
+  state: String!
+  street: String!
+  neighborhood: String!
+  cep: String!
+  number: String!
+}
+
+input UpdateComplaintInputDto {
+  id: String!
+  solverId: String!
+  solverDescription: String
+  status: StatusesEnum!
+  updatedAt: DateTime!
 }

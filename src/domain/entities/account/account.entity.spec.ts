@@ -1,6 +1,6 @@
 import { randomUUID } from 'crypto';
-import { AccountEntity, RoleEnum } from './accounts.entity';
-import { CryptoHashAdapter } from './../../../infra/adapters/crypto/CryptoHashAdapter';
+import { AccountEntity, RoleEnum } from './account.entity';
+import { CryptoHashAdapter } from '../../../infra/adapters/crypto/CryptoHashAdapter';
 
 describe('AccountEntity', () => {
   const cryptoHashAdapter = new CryptoHashAdapter();

@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
-import { AccountsInMemoryRepository } from './accounts/accounts-in-memory-repository.service';
 import { AccountsRepository } from '../../domain/repositories/accounts.repository';
+import { ComplaintsRepository } from '../../domain/repositories/complaints.repository';
+import { AccountsInMemoryRepository } from './accounts/accounts-in-memory-repository.service';
+import { ComplaintsInMemoryRepository } from './complaints/complaints-in-memory-repository.service';
 
 @Module({
   providers: [
@@ -8,7 +10,11 @@ import { AccountsRepository } from '../../domain/repositories/accounts.repositor
       provide: AccountsRepository,
       useClass: AccountsInMemoryRepository,
     },
+    {
+      provide: ComplaintsRepository,
+      useClass: ComplaintsInMemoryRepository,
+    },
   ],
-  exports: [AccountsRepository],
+  exports: [AccountsRepository, ComplaintsRepository],
 })
 export class RepositoriesModule {}

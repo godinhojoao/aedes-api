@@ -12,7 +12,9 @@ export function seedLocations(prisma: PrismaClient) {
         state: 'RS',
         city: 'City 1',
         street: 'Street 1',
+        number: '1940',
         neighborhood: 'Neighborhood 1',
+        formattedAddress: 'Neighborhood - Street 1, 1940',
       },
     ],
   });

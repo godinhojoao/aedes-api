@@ -9,7 +9,7 @@ import { Request } from 'express';
 import { IS_PUBLIC_KEY } from '../decorators/SkipAuthentication';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { JwtAdapter } from './../../domain/adapters/JwtAdapter';
-import { RoleEnum } from './../../domain/entities/accounts/accounts.entity';
+import { RoleEnum } from '../../domain/entities/account/account.entity';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

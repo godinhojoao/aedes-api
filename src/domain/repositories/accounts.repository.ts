@@ -1,4 +1,4 @@
-import { AccountEntity } from '../entities/accounts/accounts.entity';
+import { AccountEntity } from '../entities/account/account.entity';
 
 export type FindOneInput = {
   id?: string;

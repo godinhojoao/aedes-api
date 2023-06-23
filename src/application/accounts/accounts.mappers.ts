@@ -1,5 +1,5 @@
-import { AccountToViewDto } from '../../domain/entities/accounts/accounts.dtos';
-import { AccountEntity } from '../../domain/entities/accounts/accounts.entity';
+import { AccountToViewDto } from '../../domain/entities/account/account.dtos';
+import { AccountEntity } from '../../domain/entities/account/account.entity';
 
 export class AccountMapper {
   public static toView(account: AccountEntity): AccountToViewDto {

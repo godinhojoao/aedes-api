@@ -15,7 +15,7 @@ import {
   ObjectType,
   registerEnumType,
 } from '@nestjs/graphql';
-import { CPF_REGEX, RoleEnum } from './accounts.entity';
+import { CPF_REGEX, RoleEnum } from './account.entity';
 
 registerEnumType(RoleEnum, {
   name: 'RoleEnum',

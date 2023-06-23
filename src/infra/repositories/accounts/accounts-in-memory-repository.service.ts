@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import {
   AccountEntity,
   RoleEnum,
-} from '../../../domain/entities/accounts/accounts.entity';
+} from '../../../domain/entities/account/account.entity';
 import {
   AccountsRepository,
   FindOneInput,

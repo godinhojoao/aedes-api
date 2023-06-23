@@ -19,6 +19,7 @@ enum ComplaintStatuses {
   WAITING
   DOING
   SOLVED
+  REJECTED
 }
 
 model Account {
@@ -27,8 +28,9 @@ model Account {
   name                   String       @db.VarChar(255)
   password               String
   cpf                    String       @db.VarChar(11)
+  points                 Int          @default(0) @db.Integer()
   role                   AccountRoles @default(USER)
-  createdAt              DateTime     @default(now())
+  createdAt              DateTime     @default(now()) @map(name: "created_at")
   complaints_owner       Complaint[]  @relation("OwnerToComplaint")
   complaints_denunciator Complaint[]  @relation("DenunciatorToComplaint")
 
@@ -36,35 +38,39 @@ model Account {
 }
 
 model Location {
-  id           String      @id @default(uuid()) @db.Uuid
-  description  String      @db.VarChar(5000)
-  latitude     Float
-  longitude    Float
-  cep          String      @db.VarChar(8)
-  state        String      @db.VarChar(2)
-  city         String      @db.VarChar(30)
-  street       String      @db.VarChar(255)
-  neighborhood String      @db.VarChar(255)
-  createdAt    DateTime    @default(now())
-  Complaint    Complaint[]
+  id               String      @id @default(uuid()) @db.Uuid
+  description      String      @db.VarChar(5000)
+  latitude         Float
+  longitude        Float
+  cep              String      @db.VarChar(8)
+  number           String      @db.VarChar(20)
+  state            String      @db.VarChar(2)
+  city             String      @db.VarChar(30)
+  street           String      @db.VarChar(255)
+  neighborhood     String      @db.VarChar(255)
+  formattedAddress String      @db.VarChar(550)
+  createdAt        DateTime    @default(now()) @map(name: "created_at")
+  Complaint        Complaint[]
 
   @@map("locations")
 }
 
 model Complaint {
-  id        String            @id @default(uuid()) @db.Uuid
-  status    ComplaintStatuses @default(WAITING)
-  createdAt DateTime          @default(now())
-  updatedAt DateTime          @updatedAt
+  id                String            @id @default(uuid()) @db.Uuid
+  status            ComplaintStatuses @default(WAITING)
+  createdAt         DateTime          @default(now()) @map(name: "created_at")
+  updatedAt         DateTime          @updatedAt @map(name: "updated_at")
+  description       String            @db.VarChar(5000)
+  solverDescription String?           @map(name: "solver_description") @db.VarChar(5000)
 
-  location_id String   @db.Uuid
-  location    Location @relation(fields: [location_id], references: [id])
+  locationId String   @map(name: "location_id") @db.Uuid
+  location   Location @relation(fields: [locationId], references: [id])
 
-  denunciator_id String  @db.Uuid
-  denunciator    Account @relation("OwnerToComplaint", fields: [denunciator_id], references: [id])
+  denunciatorId String  @map(name: "denunciator_id") @db.Uuid
+  denunciator   Account @relation("OwnerToComplaint", fields: [denunciatorId], references: [id])
 
-  solver_id String?  @db.Uuid
-  solver    Account? @relation("DenunciatorToComplaint", fields: [solver_id], references: [id])
+  solverId String?  @map(name: "solver_id") @db.Uuid
+  solver   Account? @relation("DenunciatorToComplaint", fields: [solverId], references: [id])
 
   @@map("complaints")
 }

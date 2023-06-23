@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AccountsInMemoryRepository } from './accounts-in-memory-repository.service';
 import { BadRequestException } from '@nestjs/common';
-import { AccountEntity } from '../../../domain/entities/accounts/accounts.entity';
+import { AccountEntity } from '../../../domain/entities/account/account.entity';
 import { CryptoHashAdapter } from './../../../infra/adapters/crypto/CryptoHashAdapter';
 
 describe('AccountsInMemoryRepository', () => {

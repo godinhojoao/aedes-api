@@ -1,4 +1,4 @@
-import { RoleEnum } from '../entities/accounts/accounts.entity';
+import { RoleEnum } from '../entities/account/account.entity';
 
 export type JwtTokenPayload = {
   id: string;

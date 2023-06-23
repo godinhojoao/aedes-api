@@ -1,5 +1,5 @@
-import { CreateAccountInputDto } from './accounts.dtos';
-import { HashAdapter } from 'src/domain/adapters/HashAdapter';
+import { CreateAccountInputDto } from './account.dtos';
+import { HashAdapter } from '../../../domain/adapters/HashAdapter';
 
 export enum RoleEnum {
   ADMIN = 0,

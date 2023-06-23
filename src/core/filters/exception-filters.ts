@@ -5,9 +5,6 @@ import { GqlArgumentsHost } from '@nestjs/graphql';
 @Catch()
 export class ExceptionsFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
-    // console.log('DALE? ?');
-    // console.log('host', host);
-    // console.log('exception', exception);
     const gqlHost = GqlArgumentsHost.create(host);
     const ctx = gqlHost.getContext();
     // ctx.res.json(exception);

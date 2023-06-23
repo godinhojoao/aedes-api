@@ -8,12 +8,11 @@ import {
   RemoveAccountInputDto,
   SignInInputDto,
   SignInResultDto,
-} from '../../domain/entities/accounts/accounts.dtos';
+} from '../../domain/entities/account/account.dtos';
 import { SkipAuthentication } from '../../core/decorators/SkipAuthentication';
 import { BadRequestException } from '@nestjs/common';
 import { JwtTokenPayload } from './../../domain/adapters/JwtAdapter';
 import { Roles } from './../../core/decorators/Roles';
-import { RoleEnum } from './../../domain/entities/accounts/accounts.entity';
 
 type AuthenticatedRequest = {
   account: JwtTokenPayload;

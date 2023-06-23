@@ -6,7 +6,7 @@ import { AccountsInMemoryRepository } from './../src/infra/repositories/accounts
 import { userJwtToken } from './mocks/userJwtToken';
 import { adminJwtToken } from './mocks/adminJwtToken';
 
-describe('Accounts Resolvers (e2e)', () => {
+describe('Accounts Resolver (e2e)', () => {
   let app: INestApplication;
   let createdAccountId: string;
 
