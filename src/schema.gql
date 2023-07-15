@@ -30,11 +30,16 @@ type LocationToViewDto {
   number: String!
 }
 
+type ComplaintSolverToViewDto {
+  id: String!
+  name: String!
+}
+
 type ComplaintToViewDto {
   id: String!
   status: StatusesEnum!
   location: LocationToViewDto!
-  solver: AccountToViewDto
+  solver: ComplaintSolverToViewDto
   description: String!
   solverDescription: String
   createdAt: DateTime!

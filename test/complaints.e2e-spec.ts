@@ -58,9 +58,6 @@ describe('Complaints Resolver (e2e)', () => {
               solver {
                 id
                 name
-                email
-                cpf
-                role
               }
               createdAt
               updatedAt
@@ -170,9 +167,6 @@ describe('Complaints Resolver (e2e)', () => {
               solver {
                 id
                 name
-                email
-                cpf
-                role
               }
               createdAt
               updatedAt
@@ -226,9 +220,6 @@ describe('Complaints Resolver (e2e)', () => {
               solver {
                 id
                 name
-                email
-                cpf
-                role
               }
               createdAt
               updatedAt

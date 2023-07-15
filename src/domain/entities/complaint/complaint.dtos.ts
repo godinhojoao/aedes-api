@@ -16,7 +16,6 @@ import {
   registerEnumType,
 } from '@nestjs/graphql';
 import { StatusesEnum } from './complaint.entity';
-import { AccountToViewDto } from '../account/account.dtos';
 
 registerEnumType(StatusesEnum, {
   name: 'StatusesEnum',
@@ -176,6 +175,15 @@ export abstract class FindAllComplaintsInputDto {
 }
 
 @ObjectType()
+export abstract class ComplaintSolverToViewDto {
+  @Field()
+  id: string;
+
+  @Field()
+  name: string;
+}
+
+@ObjectType()
 export abstract class ComplaintToViewDto {
   @Field()
   id: string;
@@ -186,8 +194,8 @@ export abstract class ComplaintToViewDto {
   @Field(() => LocationToViewDto)
   location: LocationToViewDto;
 
-  @Field(() => AccountToViewDto, { nullable: true })
-  solver?: Pick<AccountToViewDto, 'name' | 'id'>;
+  @Field(() => ComplaintSolverToViewDto, { nullable: true })
+  solver?: ComplaintSolverToViewDto;
 
   @Field()
   description: string;

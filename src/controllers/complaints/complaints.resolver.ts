@@ -2,6 +2,7 @@ import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 import { ComplaintsUseCases } from '../../application/complaints/complaints.use-cases';
 import { JwtTokenPayload } from '../../domain/adapters/JwtAdapter';
 import { Roles } from '../../core/decorators/Roles';
+import { SkipAuthentication } from '../../core/decorators/SkipAuthentication';
 import {
   ComplaintToViewDto,
   CreateComplaintInputDto,
@@ -30,9 +31,11 @@ export class ComplaintsResolver {
 
   @Roles('ADMIN')
   @Query(() => PaginatedComplaintsToViewDto)
+  @SkipAuthentication() // just for test
   findAllComplaints(
     @Args('input') input: FindAllComplaintsInputDto,
   ): PaginatedComplaintsToViewDto {
+    console.log('test'); // test
     return this.complaintsUseCases.findAll(input);
   }
 
