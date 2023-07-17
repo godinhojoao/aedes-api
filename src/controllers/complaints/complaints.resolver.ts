@@ -35,7 +35,6 @@ export class ComplaintsResolver {
   findAllComplaints(
     @Args('input') input: FindAllComplaintsInputDto,
   ): PaginatedComplaintsToViewDto {
-    console.log('test'); // test
     return this.complaintsUseCases.findAll(input);
   }
 
