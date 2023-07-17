@@ -9,9 +9,15 @@ async function bootstrap() {
     credentials: false,
   });
 
+  app.use((req, res, next) => {
+    res.setHeader('content-type', 'application/json');
+    next();
+  });
+
   const port = process.env.PORT || 3000;
   await app.listen(port, '0.0.0.0', () => {
     console.log(`Server is running on http://localhost:${port}`);
   });
 }
+
 bootstrap();
