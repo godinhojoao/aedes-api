@@ -19,43 +19,43 @@ export class ComplaintsInMemoryRepository extends ComplaintsRepository {
     super();
     // remove it after (just testing on frontend)
     this.complaints = [
-      // {
-      //   createdAt: new Date(),
-      //   id: '93a2dffa-88eb-4fb9-bd63-85c57074119f',
-      //   description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lobortis ligula a enim maximus, et venenatis lectus placerat. Nam quis sollicitudin neque, id suscipit purus. Suspendisse et ligula ac metus bibendum aliquet. Mauris ac metus augue. Nulla eget augue tristique, aliquam enim a, efficitur nulla. Curabitur euismod tincidunt metus, eget dignissim tortor lacinia eu. Ut sagittis euismod ante a tincidunt. Duis vehicula, ex vel molestie vulputate, purus mauris iaculis mi, id iaculis nunc leo sed lectus. Sed interdum ante in pharetra malesuada.
-      //   Vestibulum nec urna neque. Nulla vitae faucibus turpis, id interdum ipsum. Vivamus eleifend sem in mauris interdum, vel auctor lectus auctor. Donec hendrerit libero in velit efficitur, vitae elementum turpis consectetur. Suspendisse sed tellus ac mauris lacinia lacinia sed id lacus. Quisque facilisis magna urna, sit amet sagittis tortor laoreet in. Nullam efficitur orci eu dui elementum, non feugiat purus scelerisque. Quisque non gravida mauris.
-      //   Etiam vel enim nec risus tempus cursus. Proin pellentesque ultrices lorem, sed venenatis risus. Duis congue convallis neque, eu suscipit leo gravida eget. Suspendisse dictum massa et erat efficitur, sit amet auctor mauris lacinia. Nam facilisis enim non nulla facilisis tempus. Quisque malesuada nunc sit amet erat vestibulum, eget venenatis felis pharetra. Nulla finibus, ex sit amet fringilla bibendum, risus est interdum leo, id faucibus ex libero in leo. Nulla facilisi. Mauris dignissim metus in tristique congue. Vestibulum semper dignissim enim, sed fringilla dolor rhoncus sit amet. Curabitur commodo iaculis ipsum ut viverra. Nam eleifend viverra felis, id varius leo dapibus ac. Donec a urna aliquet, maximus quam eu, aliquam orci.
-      //   Cras vestibulum leo a ligula congue aliquam. Sed efficitur erat eu nulla rutrum interdum. Nam vel sagittis metus. Integer quis tristique neque. Etiam sed neque in dolor rhoncus vulputate id ac nunc. Vestibulum consequat elementum finibus. Suspendisse dapibus dolor et urna sagittis facilisis. Sed placerat nulla id arcu iaculis, nec efficitur sem cursus. Aliquam iaculis purus et tortor consequat, vel scelerisque erat commodo. Integer vel cursus urna. Suspendisse a pellentesque neque. Aenean vitae nisl lorem. In malesuada turpis mi, nec eleifend ligula malesuada vel. Donec convallis dolor a urna maximus facilisis. Aenean sed felis turpis.`,
-      //   status: 0,
-      //   formattedAddress: 'Test formatted address',
-      //   denunciatorId: 'denunciator-id',
-      //   location: {
-      //     id: 'location-id',
-      //     city: 'Bagé',
-      //     state: 'Example State',
-      //     street: 'Example Street',
-      //     neighborhood: 'Example Neighborhood',
-      //     cep: '12345-678',
-      //     number: '123',
-      //   },
-      // },
-      // {
-      //   createdAt: new Date(),
-      //   id: '04574544-9018-4428-829f-8c563438b2e2',
-      //   description: 'FODASE',
-      //   status: 0,
-      //   formattedAddress: 'Test formatted address',
-      //   denunciatorId: 'denunciator-id',
-      //   location: {
-      //     id: 'location-id',
-      //     city: 'Bagé',
-      //     state: 'Example State',
-      //     street: 'Example Street',
-      //     neighborhood: 'Example Neighborhood',
-      //     cep: '12345-678',
-      //     number: '123',
-      //   },
-      // },
+      {
+        createdAt: new Date(),
+        id: '93a2dffa-88eb-4fb9-bd63-85c57074119f',
+        description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lobortis ligula a enim maximus, et venenatis lectus placerat. Nam quis sollicitudin neque, id suscipit purus. Suspendisse et ligula ac metus bibendum aliquet. Mauris ac metus augue. Nulla eget augue tristique, aliquam enim a, efficitur nulla. Curabitur euismod tincidunt metus, eget dignissim tortor lacinia eu. Ut sagittis euismod ante a tincidunt. Duis vehicula, ex vel molestie vulputate, purus mauris iaculis mi, id iaculis nunc leo sed lectus. Sed interdum ante in pharetra malesuada.
+        Vestibulum nec urna neque. Nulla vitae faucibus turpis, id interdum ipsum. Vivamus eleifend sem in mauris interdum, vel auctor lectus auctor. Donec hendrerit libero in velit efficitur, vitae elementum turpis consectetur. Suspendisse sed tellus ac mauris lacinia lacinia sed id lacus. Quisque facilisis magna urna, sit amet sagittis tortor laoreet in. Nullam efficitur orci eu dui elementum, non feugiat purus scelerisque. Quisque non gravida mauris.
+        Etiam vel enim nec risus tempus cursus. Proin pellentesque ultrices lorem, sed venenatis risus. Duis congue convallis neque, eu suscipit leo gravida eget. Suspendisse dictum massa et erat efficitur, sit amet auctor mauris lacinia. Nam facilisis enim non nulla facilisis tempus. Quisque malesuada nunc sit amet erat vestibulum, eget venenatis felis pharetra. Nulla finibus, ex sit amet fringilla bibendum, risus est interdum leo, id faucibus ex libero in leo. Nulla facilisi. Mauris dignissim metus in tristique congue. Vestibulum semper dignissim enim, sed fringilla dolor rhoncus sit amet. Curabitur commodo iaculis ipsum ut viverra. Nam eleifend viverra felis, id varius leo dapibus ac. Donec a urna aliquet, maximus quam eu, aliquam orci.
+        Cras vestibulum leo a ligula congue aliquam. Sed efficitur erat eu nulla rutrum interdum. Nam vel sagittis metus. Integer quis tristique neque. Etiam sed neque in dolor rhoncus vulputate id ac nunc. Vestibulum consequat elementum finibus. Suspendisse dapibus dolor et urna sagittis facilisis. Sed placerat nulla id arcu iaculis, nec efficitur sem cursus. Aliquam iaculis purus et tortor consequat, vel scelerisque erat commodo. Integer vel cursus urna. Suspendisse a pellentesque neque. Aenean vitae nisl lorem. In malesuada turpis mi, nec eleifend ligula malesuada vel. Donec convallis dolor a urna maximus facilisis. Aenean sed felis turpis.`,
+        status: 0,
+        formattedAddress: 'Test formatted address',
+        denunciatorId: 'denunciator-id',
+        location: {
+          id: 'location-id',
+          city: 'Bagé',
+          state: 'Example State',
+          street: 'Example Street',
+          neighborhood: 'Example Neighborhood',
+          cep: '12345-678',
+          number: '123',
+        },
+      },
+      {
+        createdAt: new Date(),
+        id: '04574544-9018-4428-829f-8c563438b2e2',
+        description: 'FODASE',
+        status: 0,
+        formattedAddress: 'Test formatted address',
+        denunciatorId: 'denunciator-id',
+        location: {
+          id: 'location-id',
+          city: 'Bagé',
+          state: 'Example State',
+          street: 'Example Street',
+          neighborhood: 'Example Neighborhood',
+          cep: '12345-678',
+          number: '123',
+        },
+      },
     ];
   }
 
