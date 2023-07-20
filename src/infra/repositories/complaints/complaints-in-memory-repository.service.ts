@@ -13,7 +13,7 @@ export type FindOneInput = {
 };
 
 export class ComplaintsInMemoryRepository extends ComplaintsRepository {
-  private complaints: ComplaintEntity[];
+  private complaints: ComplaintEntity[] = [];
 
   constructor() {
     super();

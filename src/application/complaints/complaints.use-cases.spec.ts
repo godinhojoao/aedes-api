@@ -83,6 +83,15 @@ describe('ComplaintsUseCases', () => {
             description: 'Test complaint',
             id: expect.any(String),
             status: 0,
+            location: {
+              cep: '12345-321',
+              city: 'Bagé',
+              id: expect.any(String),
+              neighborhood: 'Test neighborhood',
+              number: '1000',
+              state: 'RS',
+              street: 'Test street',
+            },
           },
           {
             city: 'Bagé',
@@ -91,6 +100,15 @@ describe('ComplaintsUseCases', () => {
             description: 'Test complaint',
             id: expect.any(String),
             status: 0,
+            location: {
+              cep: '12345-321',
+              city: 'Bagé',
+              id: expect.any(String),
+              neighborhood: 'Test neighborhood',
+              number: '1000',
+              state: 'RS',
+              street: 'Test street',
+            },
           },
         ],
         pageInfo: {
@@ -112,6 +130,15 @@ describe('ComplaintsUseCases', () => {
             id: expect.any(String),
             description: 'Test complaint',
             status: 0,
+            location: {
+              cep: '12345-321',
+              city: 'Bagé',
+              id: expect.any(String),
+              neighborhood: 'Test neighborhood',
+              number: '1000',
+              state: 'RS',
+              street: 'Test street',
+            },
           },
         ],
         pageInfo: {
@@ -133,6 +160,15 @@ describe('ComplaintsUseCases', () => {
             description: 'Test complaint',
             id: expect.any(String),
             status: 0,
+            location: {
+              cep: '12345-321',
+              city: 'Bagé',
+              id: expect.any(String),
+              neighborhood: 'Test neighborhood',
+              number: '1000',
+              state: 'RS',
+              street: 'Test street',
+            },
           },
         ],
         pageInfo: {

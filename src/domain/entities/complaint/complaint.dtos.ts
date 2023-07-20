@@ -236,6 +236,9 @@ export abstract class ComplaintItemToViewDto {
   @Field()
   formattedAddress: string;
 
+  @Field(() => LocationToViewDto)
+  location: LocationToViewDto;
+
   @Field()
   createdAt: Date;
 }

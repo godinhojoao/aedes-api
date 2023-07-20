@@ -69,6 +69,7 @@ type ComplaintItemToViewDto {
   description: String!
   city: String!
   formattedAddress: String!
+  location: LocationToViewDto!
   createdAt: DateTime!
 }
 

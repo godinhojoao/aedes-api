@@ -28,6 +28,7 @@ export class ComplaintMapper {
         description: complaint.description,
         city: complaint.location.city,
         formattedAddress: complaint.formattedAddress,
+        location: complaint.location as any,
         createdAt: complaint.createdAt,
       };
     });

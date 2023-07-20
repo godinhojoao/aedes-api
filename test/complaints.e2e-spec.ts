@@ -188,7 +188,10 @@ describe('Complaints Resolver (e2e)', () => {
           state: 'RS',
           street: 'Test street',
         },
-        solver: null, // fix it
+        solver: {
+          id: '4152d669-a9a1-49d0-bfdf-9d58040fcfb7',
+          name: '2', // fix it
+        },
         solverDescription: 'Updated solver description',
         status: 'SOLVED',
         updatedAt: expect.any(String),
@@ -241,7 +244,10 @@ describe('Complaints Resolver (e2e)', () => {
           state: 'RS',
           street: 'Test street',
         },
-        solver: null, // fix it
+        solver: {
+          id: '4152d669-a9a1-49d0-bfdf-9d58040fcfb7',
+          name: '2', // fix it
+        },
         solverDescription: 'Updated solver description',
         status: 'SOLVED',
         updatedAt: expect.any(String),
@@ -264,6 +270,15 @@ describe('Complaints Resolver (e2e)', () => {
                 city
                 createdAt
                 formattedAddress
+                location {
+                  id
+                  city
+                  state
+                  street
+                  neighborhood
+                  cep
+                  number
+                }
               }
               totalCount
               pageInfo {
@@ -289,6 +304,15 @@ describe('Complaints Resolver (e2e)', () => {
           description: 'Test complaint',
           status: 'SOLVED',
           formattedAddress: 'Test neighborhood - Test street 1000',
+          location: {
+            cep: '12345-321',
+            city: 'Bagé',
+            id: expect.any(String),
+            neighborhood: 'Test neighborhood',
+            number: '1000',
+            state: 'RS',
+            street: 'Test street',
+          },
         },
       ]);
     });
@@ -307,6 +331,15 @@ describe('Complaints Resolver (e2e)', () => {
                 city
                 createdAt
                 formattedAddress
+                location {
+                  id
+                  city
+                  state
+                  street
+                  neighborhood
+                  cep
+                  number
+                }
               }
               totalCount
               pageInfo {
