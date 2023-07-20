@@ -19,8 +19,8 @@ const validLocation = {
 const createComplaintInput = {
   id: '1',
   status: 0,
-  location: validLocation,
   denunciatorId: '2',
+  location: validLocation,
   description: 'Test complaint',
   createdAt: new Date(),
 };
@@ -65,6 +65,7 @@ describe('ComplaintsUseCases', () => {
           street: 'Test street',
         },
         solver: null,
+        denunciatorId: '2',
         status: 0,
         updatedAt: null,
       });
@@ -83,6 +84,7 @@ describe('ComplaintsUseCases', () => {
             description: 'Test complaint',
             id: expect.any(String),
             status: 0,
+            denunciatorId: '2',
             location: {
               cep: '12345-321',
               city: 'Bagé',
@@ -100,6 +102,7 @@ describe('ComplaintsUseCases', () => {
             description: 'Test complaint',
             id: expect.any(String),
             status: 0,
+            denunciatorId: '2',
             location: {
               cep: '12345-321',
               city: 'Bagé',
@@ -130,6 +133,7 @@ describe('ComplaintsUseCases', () => {
             id: expect.any(String),
             description: 'Test complaint',
             status: 0,
+            denunciatorId: '2',
             location: {
               cep: '12345-321',
               city: 'Bagé',
@@ -160,6 +164,7 @@ describe('ComplaintsUseCases', () => {
             description: 'Test complaint',
             id: expect.any(String),
             status: 0,
+            denunciatorId: '2',
             location: {
               cep: '12345-321',
               city: 'Bagé',
@@ -222,6 +227,7 @@ describe('ComplaintsUseCases', () => {
           id: '5',
           name: '2',
         },
+        denunciatorId: '2',
         status: 2,
         updatedAt: expect.any(Date),
       });

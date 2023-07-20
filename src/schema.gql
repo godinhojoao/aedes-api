@@ -40,6 +40,7 @@ type ComplaintToViewDto {
   status: StatusesEnum!
   location: LocationToViewDto!
   solver: ComplaintSolverToViewDto
+  denunciatorId: String!
   description: String!
   solverDescription: String
   createdAt: DateTime!
@@ -68,6 +69,8 @@ type ComplaintItemToViewDto {
   status: StatusesEnum!
   description: String!
   city: String!
+  denunciatorId: String!
+  solverDescription: String
   formattedAddress: String!
   location: LocationToViewDto!
   createdAt: DateTime!

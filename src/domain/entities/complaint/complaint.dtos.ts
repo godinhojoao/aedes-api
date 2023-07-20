@@ -198,6 +198,9 @@ export abstract class ComplaintToViewDto {
   solver?: ComplaintSolverToViewDto;
 
   @Field()
+  denunciatorId: string;
+
+  @Field()
   description: string;
 
   @Field({ nullable: true })
@@ -232,6 +235,12 @@ export abstract class ComplaintItemToViewDto {
 
   @Field()
   city: string;
+
+  @Field()
+  denunciatorId: string;
+
+  @Field({ nullable: true })
+  solverDescription?: string;
 
   @Field()
   formattedAddress: string;

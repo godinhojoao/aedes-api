@@ -11,6 +11,7 @@ export class ComplaintMapper {
       status: complaint.status,
       location: complaint.location as any, // fix after
       solver: complaint.solver || null,
+      denunciatorId: complaint.denunciatorId,
       createdAt: complaint.createdAt,
       updatedAt: complaint.updatedAt,
       description: complaint.description,
@@ -25,6 +26,8 @@ export class ComplaintMapper {
       return {
         id: complaint.id,
         status: complaint.status,
+        denunciatorId: complaint.denunciatorId,
+        solverDescription: complaint.solverDescription,
         description: complaint.description,
         city: complaint.location.city,
         formattedAddress: complaint.formattedAddress,

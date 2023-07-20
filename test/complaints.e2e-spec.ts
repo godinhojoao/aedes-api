@@ -46,6 +46,7 @@ describe('Complaints Resolver (e2e)', () => {
               status
               description
               solverDescription
+              denunciatorId
               location {
                 id
                 city
@@ -72,6 +73,7 @@ describe('Complaints Resolver (e2e)', () => {
         id: expect.any(String),
         description: 'Test complaint',
         solverDescription: '',
+        denunciatorId: expect.any(String),
         location: {
           cep: '12345-321',
           city: 'Bagé',
@@ -155,6 +157,7 @@ describe('Complaints Resolver (e2e)', () => {
               status
               solverDescription
               description
+              denunciatorId
               location {
                 id
                 city
@@ -179,6 +182,7 @@ describe('Complaints Resolver (e2e)', () => {
         createdAt: expect.any(String),
         id: expect.any(String),
         description: 'Test complaint',
+        denunciatorId: expect.any(String),
         location: {
           cep: '12345-321',
           city: 'Bagé',
@@ -211,6 +215,7 @@ describe('Complaints Resolver (e2e)', () => {
               status
               solverDescription
               description
+              denunciatorId
               location {
                 id
                 city
@@ -235,6 +240,7 @@ describe('Complaints Resolver (e2e)', () => {
         createdAt: expect.any(String),
         id: createdComplaintId,
         description: 'Test complaint',
+        denunciatorId: expect.any(String),
         location: {
           cep: '12345-321',
           city: 'Bagé',
@@ -270,6 +276,7 @@ describe('Complaints Resolver (e2e)', () => {
                 city
                 createdAt
                 formattedAddress
+                solverDescription
                 location {
                   id
                   city
@@ -304,6 +311,7 @@ describe('Complaints Resolver (e2e)', () => {
           description: 'Test complaint',
           status: 'SOLVED',
           formattedAddress: 'Test neighborhood - Test street 1000',
+          solverDescription: 'Updated solver description',
           location: {
             cep: '12345-321',
             city: 'Bagé',
@@ -331,6 +339,7 @@ describe('Complaints Resolver (e2e)', () => {
                 city
                 createdAt
                 formattedAddress
+                solverDescription
                 location {
                   id
                   city
