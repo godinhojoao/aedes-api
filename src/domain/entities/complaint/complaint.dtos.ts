@@ -172,6 +172,11 @@ export abstract class FindAllComplaintsInputDto {
 
   @Field(() => Int)
   offset: number;
+
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsUUID('4')
+  denunciatorId?: string;
 }
 
 @ObjectType()

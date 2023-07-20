@@ -77,6 +77,32 @@ describe('ComplaintsInMemoryRepository', () => {
       repository['complaints'] = complaints;
       expect(repository.count()).toBe(2);
     });
+
+    it('should count many complaints filtering by denunciatorId', () => {
+      const complaints: ComplaintEntity[] = [
+        {
+          id: '1',
+          status: 0,
+          location: validLocation,
+          denunciatorId: '2',
+          description: 'Complaint 1',
+          createdAt: new Date(),
+          formattedAddress: buildFormattedAddress(validLocation),
+        },
+        {
+          id: '2',
+          status: 1,
+          location: validLocation,
+          denunciatorId: '3',
+          description: 'Complaint 2',
+          createdAt: new Date(),
+          formattedAddress: buildFormattedAddress(validLocation),
+        },
+      ];
+
+      repository['complaints'] = complaints;
+      expect(repository.count('3')).toBe(1);
+    });
   });
 
   describe('findAll', () => {
@@ -165,6 +191,72 @@ describe('ComplaintsInMemoryRepository', () => {
       const result = repository.findAll({ offset: 0, limit: 2 });
 
       expect(result).toEqual(complaints);
+    });
+
+    it('should return one complaint filtering by denunciatorId', () => {
+      const complaints: ComplaintEntity[] = [
+        {
+          id: '1',
+          status: 0,
+          location: validLocation,
+          denunciatorId: '2',
+          description: 'Complaint 1',
+          createdAt: new Date(),
+          formattedAddress: buildFormattedAddress(validLocation),
+        },
+        {
+          id: '2',
+          status: 1,
+          location: validLocation,
+          denunciatorId: '3',
+          description: 'Complaint 2',
+          createdAt: new Date(),
+          formattedAddress: buildFormattedAddress(validLocation),
+        },
+      ];
+
+      repository['complaints'] = complaints;
+
+      const result = repository.findAll({
+        offset: 0,
+        limit: 999,
+        denunciatorId: '3',
+      });
+
+      expect(result).toEqual([complaints[1]]);
+    });
+
+    it('should return zero complaints filtering by non existent denunciatorId', () => {
+      const complaints: ComplaintEntity[] = [
+        {
+          id: '1',
+          status: 0,
+          location: validLocation,
+          denunciatorId: '2',
+          description: 'Complaint 1',
+          createdAt: new Date(),
+          formattedAddress: buildFormattedAddress(validLocation),
+        },
+        {
+          id: '2',
+          status: 1,
+          location: validLocation,
+          denunciatorId: '3',
+          description: 'Complaint 2',
+          createdAt: new Date(),
+          formattedAddress: buildFormattedAddress(validLocation),
+        },
+      ];
+
+      repository['complaints'] = complaints;
+
+      const result = repository.findAll({
+        offset: 0,
+        limit: 999,
+        denunciatorId: '32',
+      });
+
+      expect(result).toEqual([]);
     });
   });
 

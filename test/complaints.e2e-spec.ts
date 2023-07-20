@@ -277,6 +277,7 @@ describe('Complaints Resolver (e2e)', () => {
                 createdAt
                 formattedAddress
                 solverDescription
+                denunciatorId
                 location {
                   id
                   city
@@ -306,6 +307,7 @@ describe('Complaints Resolver (e2e)', () => {
       expect(response.body.data.findAllComplaints.items).toEqual([
         {
           createdAt: expect.any(String),
+          denunciatorId: expect.any(String),
           id: createdComplaintId,
           city: 'Bagé',
           description: 'Test complaint',
@@ -323,6 +325,56 @@ describe('Complaints Resolver (e2e)', () => {
           },
         },
       ]);
+    });
+
+    it('Given valid input and filtering by non existent denunciatorId should return empty complaints', async () => {
+      const response = await request(app.getHttpServer())
+        .post(`/graphql`)
+        .set('Authorization', adminJwtToken)
+        .send({
+          query: `query findAllComplaints ($input: FindAllComplaintsInputDto!) {
+            findAllComplaints (input: $input) {
+              items {
+                id
+                status
+                description
+                city
+                createdAt
+                formattedAddress
+                solverDescription
+                location {
+                  id
+                  city
+                  state
+                  street
+                  neighborhood
+                  cep
+                  number
+                }
+              }
+              totalCount
+              pageInfo {
+                hasNextPage
+                hasPreviousPage
+              }
+            }
+          }`,
+          variables: {
+            input: {
+              offset: 0,
+              limit: 1,
+              denunciatorId: '222beac2-4365-4665-b3cd-1099104d0c4a',
+            },
+          },
+        });
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body.data.findAllComplaints.totalCount).toBe(0);
+      expect(response.body.data.findAllComplaints.pageInfo).toEqual({
+        hasNextPage: false,
+        hasPreviousPage: false,
+      });
+      expect(response.body.data.findAllComplaints.items).toEqual([]);
     });
 
     it('Given valid input should return paginated complaints [1]', async () => {

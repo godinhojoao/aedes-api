@@ -59,8 +59,14 @@ export class ComplaintsInMemoryRepository extends ComplaintsRepository {
     ];
   }
 
-  count(): number {
-    return this.complaints.length;
+  count(denunciatorId?: string): number {
+    let complaints = this.complaints;
+    if (denunciatorId) {
+      complaints = complaints.filter((item) => {
+        return item.denunciatorId === denunciatorId;
+      });
+    }
+    return complaints.length;
   }
 
   findAll(
@@ -69,7 +75,12 @@ export class ComplaintsInMemoryRepository extends ComplaintsRepository {
     const startIndex = findAllComplaintsInput.offset;
     const endIndex =
       findAllComplaintsInput.offset + findAllComplaintsInput.limit;
-    const paginatedComplaints = this.complaints.slice(startIndex, endIndex);
+    let paginatedComplaints = this.complaints.slice(startIndex, endIndex);
+    if (findAllComplaintsInput.denunciatorId) {
+      paginatedComplaints = paginatedComplaints.filter((item) => {
+        return item.denunciatorId === findAllComplaintsInput.denunciatorId;
+      });
+    }
     return paginatedComplaints;
   }
 

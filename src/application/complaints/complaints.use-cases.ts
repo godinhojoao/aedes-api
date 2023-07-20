@@ -20,7 +20,7 @@ export class ComplaintsUseCases {
   ) {}
 
   findAll(input: FindAllComplaintsInputDto): PaginatedComplaintsToViewDto {
-    const totalCount = this.complaintsRepository.count();
+    const totalCount = this.complaintsRepository.count(input.denunciatorId);
     const complaints = this.complaintsRepository.findAll(input);
 
     return {

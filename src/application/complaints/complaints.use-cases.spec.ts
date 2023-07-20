@@ -84,6 +84,7 @@ describe('ComplaintsUseCases', () => {
             description: 'Test complaint',
             id: expect.any(String),
             status: 0,
+            solverDescription: '',
             denunciatorId: '2',
             location: {
               cep: '12345-321',
@@ -101,6 +102,7 @@ describe('ComplaintsUseCases', () => {
             formattedAddress: 'Test neighborhood - Test street 1000',
             description: 'Test complaint',
             id: expect.any(String),
+            solverDescription: '',
             status: 0,
             denunciatorId: '2',
             location: {
@@ -133,6 +135,7 @@ describe('ComplaintsUseCases', () => {
             id: expect.any(String),
             description: 'Test complaint',
             status: 0,
+            solverDescription: '',
             denunciatorId: '2',
             location: {
               cep: '12345-321',
@@ -165,6 +168,7 @@ describe('ComplaintsUseCases', () => {
             id: expect.any(String),
             status: 0,
             denunciatorId: '2',
+            solverDescription: '',
             location: {
               cep: '12345-321',
               city: 'Bagé',
@@ -181,6 +185,22 @@ describe('ComplaintsUseCases', () => {
           hasPreviousPage: false,
         },
         totalCount: 2,
+      });
+    });
+
+    it('Should return empty complaints filtering by non existent denunciatorId', () => {
+      const result = service.findAll({
+        limit: 999,
+        offset: 0,
+        denunciatorId: '12321',
+      });
+      expect(result).toEqual({
+        items: [],
+        pageInfo: {
+          hasNextPage: false,
+          hasPreviousPage: false,
+        },
+        totalCount: 0,
       });
     });
   });

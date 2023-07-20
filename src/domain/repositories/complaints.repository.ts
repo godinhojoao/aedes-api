@@ -10,7 +10,7 @@ export type FindOneInput = {
 };
 
 export abstract class ComplaintsRepository {
-  abstract count(): number;
+  abstract count(denunciatorId?: string): number;
   abstract findAll(
     findAllComplaintsInput: FindAllComplaintsInputDto,
   ): ComplaintEntity[];

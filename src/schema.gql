@@ -90,6 +90,7 @@ type Query {
 input FindAllComplaintsInputDto {
   limit: Int!
   offset: Int!
+  denunciatorId: String
 }
 
 input FindComplaintInputDto {
