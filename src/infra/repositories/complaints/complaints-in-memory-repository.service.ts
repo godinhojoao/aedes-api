@@ -28,7 +28,7 @@ export class ComplaintsInMemoryRepository extends ComplaintsRepository {
         Cras vestibulum leo a ligula congue aliquam. Sed efficitur erat eu nulla rutrum interdum. Nam vel sagittis metus. Integer quis tristique neque. Etiam sed neque in dolor rhoncus vulputate id ac nunc. Vestibulum consequat elementum finibus. Suspendisse dapibus dolor et urna sagittis facilisis. Sed placerat nulla id arcu iaculis, nec efficitur sem cursus. Aliquam iaculis purus et tortor consequat, vel scelerisque erat commodo. Integer vel cursus urna. Suspendisse a pellentesque neque. Aenean vitae nisl lorem. In malesuada turpis mi, nec eleifend ligula malesuada vel. Donec convallis dolor a urna maximus facilisis. Aenean sed felis turpis.`,
         status: 0,
         formattedAddress: 'Test formatted address',
-        denunciatorId: 'denunciator-id',
+        denunciatorId: '6037e83c-7416-4588-9a0a-4d9fe41dbbfb',
         location: {
           id: 'location-id',
           city: 'Bagé',
@@ -45,7 +45,7 @@ export class ComplaintsInMemoryRepository extends ComplaintsRepository {
         description: 'FODASE',
         status: 0,
         formattedAddress: 'Test formatted address',
-        denunciatorId: 'denunciator-id',
+        denunciatorId: '38d37972-e937-4b75-8dd7-bef15dbd88da',
         location: {
           id: 'location-id',
           city: 'Bagé',
