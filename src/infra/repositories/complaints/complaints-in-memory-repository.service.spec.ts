@@ -8,7 +8,7 @@ import {
 
 const validLocation = {
   id: '1',
-  cep: '12345-321',
+  cep: '12345321',
   city: 'Bagé',
   neighborhood: 'Test neighborhood',
   number: '1000',
@@ -270,7 +270,7 @@ describe('ComplaintsInMemoryRepository', () => {
           state: 'State',
           street: 'Street',
           neighborhood: 'Neighborhood',
-          cep: '12345-678',
+          cep: '12345678',
           number: '123',
         },
         denunciatorId: '3',
@@ -299,7 +299,7 @@ describe('ComplaintsInMemoryRepository', () => {
         description: 'Complaint description',
         id: '1',
         location: {
-          cep: '12345-678',
+          cep: '12345678',
           city: 'City',
           id: '2',
           neighborhood: 'Neighborhood',

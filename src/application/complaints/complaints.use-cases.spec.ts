@@ -9,7 +9,7 @@ import { BadRequestException } from '@nestjs/common';
 
 let createdComplaint = null;
 const validLocation = {
-  cep: '12345-321',
+  cep: '12345321',
   city: 'Bagé',
   neighborhood: 'Test neighborhood',
   number: '1000',
@@ -57,7 +57,7 @@ describe('ComplaintsUseCases', () => {
         solverDescription: '',
         location: {
           id: expect.any(String),
-          cep: '12345-321',
+          cep: '12345321',
           city: 'Bagé',
           neighborhood: 'Test neighborhood',
           number: '1000',
@@ -87,7 +87,7 @@ describe('ComplaintsUseCases', () => {
             solverDescription: '',
             denunciatorId: '2',
             location: {
-              cep: '12345-321',
+              cep: '12345321',
               city: 'Bagé',
               id: expect.any(String),
               neighborhood: 'Test neighborhood',
@@ -106,7 +106,7 @@ describe('ComplaintsUseCases', () => {
             status: 0,
             denunciatorId: '2',
             location: {
-              cep: '12345-321',
+              cep: '12345321',
               city: 'Bagé',
               id: expect.any(String),
               neighborhood: 'Test neighborhood',
@@ -138,7 +138,7 @@ describe('ComplaintsUseCases', () => {
             solverDescription: '',
             denunciatorId: '2',
             location: {
-              cep: '12345-321',
+              cep: '12345321',
               city: 'Bagé',
               id: expect.any(String),
               neighborhood: 'Test neighborhood',
@@ -170,7 +170,7 @@ describe('ComplaintsUseCases', () => {
             denunciatorId: '2',
             solverDescription: '',
             location: {
-              cep: '12345-321',
+              cep: '12345321',
               city: 'Bagé',
               id: expect.any(String),
               neighborhood: 'Test neighborhood',
@@ -236,7 +236,7 @@ describe('ComplaintsUseCases', () => {
         id: createdComplaint.id,
         location: {
           id: expect.any(String),
-          cep: '12345-321',
+          cep: '12345321',
           city: 'Bagé',
           neighborhood: 'Test neighborhood',
           number: '1000',

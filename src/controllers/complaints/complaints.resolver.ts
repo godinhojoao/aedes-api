@@ -11,6 +11,7 @@ import {
   PaginatedComplaintsToViewDto,
   UpdateComplaintInputDto,
 } from '../../domain/entities/complaint/complaint.dtos';
+import { Type } from 'class-transformer';
 
 type AuthenticatedRequest = {
   account: JwtTokenPayload;
@@ -31,7 +32,6 @@ export class ComplaintsResolver {
 
   @Roles('ADMIN')
   @Query(() => PaginatedComplaintsToViewDto)
-  @SkipAuthentication() // just for test
   findAllComplaints(
     @Args('input') input: FindAllComplaintsInputDto,
   ): PaginatedComplaintsToViewDto {

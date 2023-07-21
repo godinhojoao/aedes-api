@@ -1,12 +1,17 @@
 import {
   IsDate,
+  IsDefined,
   IsEnum,
   IsNotEmpty,
+  IsNotEmptyObject,
+  IsObject,
   IsOptional,
   IsString,
   IsUUID,
+  Length,
   Matches,
   MaxLength,
+  ValidateNested,
 } from 'class-validator';
 import {
   Field,
@@ -16,6 +21,7 @@ import {
   registerEnumType,
 } from '@nestjs/graphql';
 import { StatusesEnum } from './complaint.entity';
+import { Type } from 'class-transformer';
 
 registerEnumType(StatusesEnum, {
   name: 'StatusesEnum',
@@ -51,7 +57,8 @@ export abstract class LocationInputDto {
 
   @Field()
   @IsNotEmpty()
-  @Matches(/^\d{5}-\d{3}$/)
+  @Matches(/^\d{8}$/)
+  @Length(8, 8, { message: 'CEP must be exactly 8 digits long' })
   cep: string;
 
   @Field()
@@ -89,7 +96,7 @@ export abstract class LocationToViewDto extends LocationInputDto {
 
   @Field()
   @IsNotEmpty()
-  @Matches(/^\d{5}-\d{3}$/)
+  @Matches(/^\d{8}$/)
   cep: string;
 
   @Field()
@@ -101,6 +108,11 @@ export abstract class LocationToViewDto extends LocationInputDto {
 
 @InputType()
 export abstract class CreateComplaintInputDto {
+  @IsDefined()
+  @IsNotEmptyObject()
+  @IsObject()
+  @ValidateNested()
+  @Type(() => LocationInputDto)
   @Field(() => LocationInputDto)
   location: LocationInputDto;
 

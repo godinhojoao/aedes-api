@@ -9,7 +9,7 @@ describe('Complaints Resolver (e2e)', () => {
   let app: INestApplication;
   let createdComplaintId: string;
   const validLocation = {
-    cep: '12345-321',
+    cep: '12345321',
     city: 'Bagé',
     neighborhood: 'Test neighborhood',
     number: '1000',
@@ -75,7 +75,7 @@ describe('Complaints Resolver (e2e)', () => {
         solverDescription: '',
         denunciatorId: expect.any(String),
         location: {
-          cep: '12345-321',
+          cep: '12345321',
           city: 'Bagé',
           id: expect.any(String),
           neighborhood: 'Test neighborhood',
@@ -87,6 +87,57 @@ describe('Complaints Resolver (e2e)', () => {
         status: 'WAITING',
         updatedAt: null,
       });
+    });
+
+    it('Given invalid cep should return error', async () => {
+      const response = await request(app.getHttpServer())
+        .post(`/graphql`)
+        .set('Authorization', adminJwtToken)
+        .send({
+          query: `mutation createComplaint ($input: CreateComplaintInputDto!) {
+            createComplaint (input: $input) {
+              id
+              status
+              description
+              solverDescription
+              denunciatorId
+              location {
+                id
+                city
+                state
+                street
+                neighborhood
+                cep
+                number
+              }
+              solver {
+                id
+                name
+              }
+              createdAt
+              updatedAt
+            }
+          }`,
+          variables: {
+            input: {
+              ...createComplaintInput,
+              location: {
+                ...createComplaintInput.location,
+                cep: '123456789123123',
+              },
+            },
+          },
+        });
+      expect(response.statusCode).toBe(200);
+      expect(response.body.data).toBeNull();
+      expect(response.body.errors).toEqual([
+        {
+          code: 'BAD_REQUEST',
+          detailedMessage: 'location.CEP must be exactly 8 digits long',
+          message: 'Bad Request Exception',
+          path: ['createComplaint'],
+        },
+      ]);
     });
 
     it('Given invalid accessToken that is not from an admin should return error', async () => {
@@ -184,7 +235,7 @@ describe('Complaints Resolver (e2e)', () => {
         description: 'Test complaint',
         denunciatorId: expect.any(String),
         location: {
-          cep: '12345-321',
+          cep: '12345321',
           city: 'Bagé',
           id: expect.any(String),
           neighborhood: 'Test neighborhood',
@@ -242,7 +293,7 @@ describe('Complaints Resolver (e2e)', () => {
         description: 'Test complaint',
         denunciatorId: expect.any(String),
         location: {
-          cep: '12345-321',
+          cep: '12345321',
           city: 'Bagé',
           id: expect.any(String),
           neighborhood: 'Test neighborhood',
@@ -315,7 +366,7 @@ describe('Complaints Resolver (e2e)', () => {
           formattedAddress: 'Test neighborhood - Test street 1000',
           solverDescription: 'Updated solver description',
           location: {
-            cep: '12345-321',
+            cep: '12345321',
             city: 'Bagé',
             id: expect.any(String),
             neighborhood: 'Test neighborhood',
