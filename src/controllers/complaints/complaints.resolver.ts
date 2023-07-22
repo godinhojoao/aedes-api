@@ -2,7 +2,6 @@ import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 import { ComplaintsUseCases } from '../../application/complaints/complaints.use-cases';
 import { JwtTokenPayload } from '../../domain/adapters/JwtAdapter';
 import { Roles } from '../../core/decorators/Roles';
-import { SkipAuthentication } from '../../core/decorators/SkipAuthentication';
 import {
   ComplaintToViewDto,
   CreateComplaintInputDto,
@@ -11,7 +10,6 @@ import {
   PaginatedComplaintsToViewDto,
   UpdateComplaintInputDto,
 } from '../../domain/entities/complaint/complaint.dtos';
-import { Type } from 'class-transformer';
 
 type AuthenticatedRequest = {
   account: JwtTokenPayload;
@@ -22,7 +20,6 @@ type AuthenticatedRequest = {
 export class ComplaintsResolver {
   constructor(private readonly complaintsUseCases: ComplaintsUseCases) {}
 
-  @Roles('ADMIN')
   @Mutation(() => ComplaintToViewDto)
   createComplaint(
     @Args('input') input: CreateComplaintInputDto,
@@ -30,7 +27,6 @@ export class ComplaintsResolver {
     return this.complaintsUseCases.create(input);
   }
 
-  @Roles('ADMIN')
   @Query(() => PaginatedComplaintsToViewDto)
   findAllComplaints(
     @Args('input') input: FindAllComplaintsInputDto,
@@ -38,7 +34,6 @@ export class ComplaintsResolver {
     return this.complaintsUseCases.findAll(input);
   }
 
-  @Roles('ADMIN')
   @Query(() => ComplaintToViewDto)
   findComplaint(
     @Args('input') input: FindComplaintInputDto,

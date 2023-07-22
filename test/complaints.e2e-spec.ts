@@ -38,7 +38,7 @@ describe('Complaints Resolver (e2e)', () => {
     it('Given valid input should return created complaint', async () => {
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
-        .set('Authorization', adminJwtToken)
+        .set('Authorization', userJwtToken)
         .send({
           query: `mutation createComplaint ($input: CreateComplaintInputDto!) {
             createComplaint (input: $input) {
@@ -140,30 +140,6 @@ describe('Complaints Resolver (e2e)', () => {
       ]);
     });
 
-    it('Given invalid accessToken that is not from an admin should return error', async () => {
-      const response = await request(app.getHttpServer())
-        .post(`/graphql`)
-        .set('Authorization', userJwtToken)
-        .send({
-          query: `mutation createComplaint ($input: CreateComplaintInputDto!) {
-            createComplaint (input: $input) {
-              id
-            }
-          }`,
-          variables: { input: createComplaintInput },
-        });
-      expect(response.statusCode).toBe(200);
-      expect(response.body.data).toBe(null);
-      expect(response.body.errors).toEqual([
-        {
-          code: 'FORBIDDEN',
-          path: ['createComplaint'],
-          detailedMessage: 'Forbidden resource',
-          message: 'Forbidden resource',
-        },
-      ]);
-    });
-
     it('Given empty accessToken should return error', async () => {
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
@@ -258,7 +234,7 @@ describe('Complaints Resolver (e2e)', () => {
     it('Given valid input should return complaint', async () => {
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
-        .set('Authorization', adminJwtToken)
+        .set('Authorization', userJwtToken)
         .send({
           query: `query findComplaint ($input: FindComplaintInputDto!) {
             findComplaint (input: $input) {
@@ -316,7 +292,7 @@ describe('Complaints Resolver (e2e)', () => {
     it('Given valid input should return paginated complaints [0]', async () => {
       const response = await request(app.getHttpServer())
         .post(`/graphql`)
-        .set('Authorization', adminJwtToken)
+        .set('Authorization', userJwtToken)
         .send({
           query: `query findAllComplaints ($input: FindAllComplaintsInputDto!) {
             findAllComplaints (input: $input) {
