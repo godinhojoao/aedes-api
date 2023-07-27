@@ -154,11 +154,12 @@ export abstract class UpdateComplaintInputDto {
   location?: LocationInputDto;
 
   @Field({ nullable: true })
-  @IsNotEmpty()
+  @IsOptional()
   @MaxLength(5000)
   description?: string;
 
   @Field({ nullable: true })
+  @IsOptional()
   @IsUUID('4')
   solverId?: string;
 
@@ -260,9 +261,6 @@ export abstract class ComplaintItemToViewDto {
 
   @Field()
   description: string;
-
-  @Field()
-  city: string;
 
   @Field()
   denunciatorId: string;

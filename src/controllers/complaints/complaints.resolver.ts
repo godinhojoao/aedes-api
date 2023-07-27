@@ -42,7 +42,6 @@ export class ComplaintsResolver {
     return account;
   }
 
-  @Roles('ADMIN')
   @Mutation(() => ComplaintToViewDto)
   updateComplaint(
     @Args('input') input: UpdateComplaintInputDto,

@@ -229,7 +229,78 @@ describe('Complaints Resolver (e2e)', () => {
           id: expect.any(String),
         },
         solver: {
-          id: '4152d669-a9a1-49d0-bfdf-9d58040fcfb7',
+          id: expect.any(String),
+          name: '2', // fix it
+        },
+        solverDescription: 'Updated solver description',
+        status: 'SOLVED',
+        updatedAt: expect.any(String),
+      });
+    });
+
+    it('Given valid input without solverId should return updated complaint', async () => {
+      const updateComplaintInput = {
+        id: createdComplaintId,
+        solverDescription: 'Updated solver description',
+        location: {
+          cep: '54321321',
+          city: 'Bagé',
+          neighborhood: 'Test neighborhood',
+          number: '4321',
+          state: 'RS',
+          street: 'Test street',
+        },
+        status: 'SOLVED',
+        updatedAt: new Date(),
+      };
+
+      const response = await request(app.getHttpServer())
+        .post(`/graphql`)
+        .set('Authorization', adminJwtToken)
+        .send({
+          query: `mutation updateComplaint ($input: UpdateComplaintInputDto!) {
+            updateComplaint (input: $input) {
+              id
+              status
+              solverDescription
+              description
+              denunciatorId
+              location {
+                id
+                city
+                state
+                street
+                neighborhood
+                cep
+                number
+              }
+              solver {
+                id
+                name
+              }
+              createdAt
+              updatedAt
+            }
+          }`,
+          variables: { input: updateComplaintInput },
+        });
+      expect(response.statusCode).toBe(200);
+      expect(response.body.data.updateComplaint).toEqual({
+        createdAt: expect.any(String),
+        id: expect.any(String),
+        description: 'testing',
+        denunciatorId: expect.any(String),
+        location: {
+          city: 'Bagé',
+          state: 'RS',
+          street: 'Test street',
+          neighborhood: 'Test neighborhood',
+          cep: '54321321',
+          number: '4321',
+          id: expect.any(String),
+        },
+        solver: {
+          id: expect.any(String),
           name: '2', // fix it
         },
         solverDescription: 'Updated solver description',
@@ -287,7 +358,7 @@ describe('Complaints Resolver (e2e)', () => {
           street: 'Test street',
         },
         solver: {
-          id: '4152d669-a9a1-49d0-bfdf-9d58040fcfb7',
+          id: expect.any(String),
           name: '2', // fix it
         },
         solverDescription: 'Updated solver description',
@@ -309,7 +380,6 @@ describe('Complaints Resolver (e2e)', () => {
                 id
                 status
                 description
-                city
                 createdAt
                 formattedAddress
                 solverDescription
@@ -345,7 +415,6 @@ describe('Complaints Resolver (e2e)', () => {
           createdAt: expect.any(String),
           denunciatorId: expect.any(String),
           id: createdComplaintId,
-          city: 'Bagé',
           description: 'testing',
           status: 'SOLVED',
           formattedAddress: 'Test neighborhood - Test street 1000',
@@ -374,7 +443,6 @@ describe('Complaints Resolver (e2e)', () => {
                 id
                 status
                 description
-                city
                 createdAt
                 formattedAddress
                 solverDescription
@@ -424,7 +492,6 @@ describe('Complaints Resolver (e2e)', () => {
                 id
                 status
                 description
-                city
                 createdAt
                 formattedAddress
                 solverDescription

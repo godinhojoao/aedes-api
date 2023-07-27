@@ -68,7 +68,6 @@ type ComplaintItemToViewDto {
   id: String!
   status: StatusesEnum!
   description: String!
-  city: String!
   denunciatorId: String!
   solverDescription: String
   formattedAddress: String!
