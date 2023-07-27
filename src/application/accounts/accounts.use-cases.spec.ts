@@ -7,6 +7,7 @@ import { HashAdapter } from './../../domain/adapters/HashAdapter';
 import { CryptoHashAdapter } from './../../infra/adapters/crypto/CryptoHashAdapter';
 import { JwtAdapter } from './../../domain/adapters/JwtAdapter';
 import { JwtAdapterImp } from './../../infra/adapters/jwt/JwtAdapter';
+import { RoleEnum } from './../../domain/entities/account/account.entity';
 
 describe('AccountsUseCases', () => {
   let service: AccountsUseCases;
@@ -127,6 +128,39 @@ describe('AccountsUseCases', () => {
           role: 0,
         },
       });
+    });
+
+    it('Given account role admin and usgin admin account should return token', () => {
+      const result = service.signIn(
+        {
+          email: 'john@example.com',
+          password: 'Demo@123',
+        },
+        RoleEnum.ADMIN,
+      );
+      expect(result).toEqual({
+        token: expect.any(String),
+        account: {
+          cpf: '12345678900',
+          email: 'john@example.com',
+          id: 'd8b23a1e-eae3-452b-86bc-bb2ecce00541',
+          name: 'John Doe',
+          role: 0,
+        },
+      });
+    });
+
+    it('Given account role admin and usign user account should return error', () => {
+      const incorrectRoleCall = () =>
+        service.signIn(
+          {
+            email: 'jane@example.com',
+            password: 'Demo@123',
+          },
+          RoleEnum.ADMIN,
+        );
+      expect(incorrectRoleCall).toThrowError(BadRequestException);
+      expect(incorrectRoleCall).toThrowError('Invalid role.');
     });
 
     it('Given incorrect email should return error', () => {

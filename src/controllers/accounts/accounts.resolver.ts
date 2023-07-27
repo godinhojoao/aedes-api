@@ -11,6 +11,7 @@ import {
 import { SkipAuthentication } from '../../core/decorators/SkipAuthentication';
 import { JwtTokenPayload } from './../../domain/adapters/JwtAdapter';
 import { Roles } from './../../core/decorators/Roles';
+import { RoleEnum } from 'src/domain/entities/account/account.entity';
 
 type AuthenticatedRequest = {
   account: JwtTokenPayload;
@@ -40,8 +41,16 @@ export class AccountsResolver {
 
   @SkipAuthentication()
   @Mutation(() => SignInResultDto)
-  async signIn(@Args('input') input: SignInInputDto): Promise<SignInResultDto> {
-    const result = this.accountsUseCases.signIn(input);
+  async signIn(
+    @Args('input') input: SignInInputDto,
+    @Context('req') req: any,
+  ): Promise<SignInResultDto> {
+    let accountRole = RoleEnum.USER;
+    const origin = req.headers['referer'];
+    if (origin && origin === 'https://aedes-web.netlify.app/') {
+      accountRole = RoleEnum.ADMIN;
+    }
+    const result = this.accountsUseCases.signIn(input, accountRole);
     return result;
   }
 }

@@ -1,7 +1,6 @@
 import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 import { ComplaintsUseCases } from '../../application/complaints/complaints.use-cases';
 import { JwtTokenPayload } from '../../domain/adapters/JwtAdapter';
-import { Roles } from '../../core/decorators/Roles';
 import {
   ComplaintToViewDto,
   CreateComplaintInputDto,

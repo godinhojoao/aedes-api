@@ -9,7 +9,10 @@ import {
 import { HashAdapter } from './../../domain/adapters/HashAdapter';
 import { AccountsRepository } from '../../domain/repositories/accounts.repository';
 import { JwtAdapter } from './../../domain/adapters/JwtAdapter';
-import { AccountEntity } from '../../domain/entities/account/account.entity';
+import {
+  AccountEntity,
+  RoleEnum,
+} from '../../domain/entities/account/account.entity';
 import { AccountMapper } from './accounts.mappers';
 
 @Injectable()
@@ -37,10 +40,14 @@ export class AccountsUseCases {
     return AccountMapper.toView(deletedAccount);
   }
 
-  signIn(input: SignInInputDto): SignInResultDto {
+  signIn(input: SignInInputDto, accountRole?: RoleEnum): SignInResultDto {
     const account = this.accountsRepository.findOne({ email: input.email });
     if (!account) {
       throw new BadRequestException('Invalid email or password.');
+    }
+
+    if (accountRole === RoleEnum.ADMIN && account.role !== accountRole) {
+      throw new BadRequestException('Invalid role.');
     }
 
     const isCorrectPassword = this.hashAdapter.validate(
