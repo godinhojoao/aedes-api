@@ -152,7 +152,9 @@ input LocationInputDto {
 
 input UpdateComplaintInputDto {
   id: String!
-  solverId: String!
+  location: LocationInputDto!
+  description: String
+  solverId: String
   solverDescription: String
   status: StatusesEnum!
   updatedAt: DateTime!

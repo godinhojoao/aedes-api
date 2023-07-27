@@ -47,7 +47,7 @@ export class ComplaintsResolver {
   updateComplaint(
     @Args('input') input: UpdateComplaintInputDto,
   ): ComplaintToViewDto {
-    // use the req here to get solver id, and remove from input
-    return this.complaintsUseCases.update(input);
+    const updatedComplaint = this.complaintsUseCases.update(input);
+    return updatedComplaint;
   }
 }

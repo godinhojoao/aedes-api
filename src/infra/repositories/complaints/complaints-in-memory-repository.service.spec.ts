@@ -289,6 +289,15 @@ describe('ComplaintsInMemoryRepository', () => {
         solverDescription: 'Updated solver description',
         status: StatusesEnum.SOLVED,
         updatedAt: new Date(),
+        description: 'testing',
+        location: {
+          cep: '54321321',
+          city: 'Bagé',
+          neighborhood: 'Test neighborhood',
+          number: '4321',
+          state: 'RS',
+          street: 'Test street',
+        },
       };
 
       const updatedComplaint = repository.update(updateInput);
@@ -296,16 +305,16 @@ describe('ComplaintsInMemoryRepository', () => {
       expect(updatedComplaint).toEqual({
         createdAt: expect.any(Date),
         denunciatorId: '3',
-        description: 'Complaint description',
+        description: 'testing',
         id: '1',
         location: {
-          cep: '12345678',
-          city: 'City',
           id: '2',
-          neighborhood: 'Neighborhood',
-          number: '123',
-          state: 'State',
-          street: 'Street',
+          cep: '54321321',
+          city: 'Bagé',
+          neighborhood: 'Test neighborhood',
+          number: '4321',
+          state: 'RS',
+          street: 'Test street',
         },
         solver: {
           id: '5',
@@ -326,6 +335,14 @@ describe('ComplaintsInMemoryRepository', () => {
         solverDescription: 'Updated solver description',
         status: StatusesEnum.SOLVED,
         updatedAt: new Date(),
+        location: {
+          cep: '54321321',
+          city: 'Bagé',
+          neighborhood: 'Test neighborhood',
+          number: '4321',
+          state: 'RS',
+          street: 'Test street',
+        },
       };
 
       const updatedComplaint = repository.update(updateInput);

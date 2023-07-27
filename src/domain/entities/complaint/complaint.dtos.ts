@@ -146,10 +146,21 @@ export abstract class UpdateComplaintInputDto {
   @IsUUID('4')
   id: string;
 
-  @Field()
-  @IsUUID('4')
+  @IsOptional()
+  @IsObject()
+  @ValidateNested()
+  @Type(() => LocationInputDto)
+  @Field(() => LocationInputDto)
+  location?: LocationInputDto;
+
+  @Field({ nullable: true })
   @IsNotEmpty()
-  solverId: string;
+  @MaxLength(5000)
+  description?: string;
+
+  @Field({ nullable: true })
+  @IsUUID('4')
+  solverId?: string;
 
   @Field({ nullable: true })
   @MaxLength(5000)

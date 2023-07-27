@@ -101,6 +101,17 @@ export class ComplaintsInMemoryRepository extends ComplaintsRepository {
         updateComplaintInput.solverDescription ||
         this.complaints[index].solverDescription ||
         '';
+      this.complaints[index].description =
+        updateComplaintInput.description ||
+        this.complaints[index].description ||
+        '';
+
+      if (updateComplaintInput.location && this.complaints[index].location) {
+        this.complaints[index].location = {
+          ...this.complaints[index].location,
+          ...updateComplaintInput.location,
+        };
+      }
       this.complaints[index].status = updateComplaintInput.status
         ? updateComplaintInput.status
         : this.complaints[index].status;

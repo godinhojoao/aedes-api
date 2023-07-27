@@ -226,20 +226,29 @@ describe('ComplaintsUseCases', () => {
         solverDescription: 'Updated solver description',
         status: StatusesEnum.SOLVED,
         updatedAt: new Date(),
+        description: 'testing',
+        location: {
+          cep: '54321321',
+          city: 'Bagé',
+          neighborhood: 'Test neighborhood',
+          number: '4321',
+          state: 'RS',
+          street: 'Test street',
+        },
       };
       const updatedComplaint = service.update(updateComplaintInput);
 
       expect(updatedComplaint).toEqual({
-        description: 'Test complaint',
+        description: 'testing',
         solverDescription: 'Updated solver description',
         createdAt: expect.any(Date),
         id: createdComplaint.id,
         location: {
           id: expect.any(String),
-          cep: '12345321',
+          cep: '54321321',
           city: 'Bagé',
           neighborhood: 'Test neighborhood',
-          number: '1000',
+          number: '4321',
           state: 'RS',
           street: 'Test street',
         },
